@@ -316,12 +316,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.19.1 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.20.1 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Fablet, Y., de Borst, J., Uberti, J., and Q. Wang" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-rtcweb-mdns-ice-candidates-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-02-26" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-02-28" />
   <meta name="dct.abstract" content="WebRTC applications collect ICE candidates as part of the process of creating peer-to-peer connections. To maximize the probability of a direct peer-to-peer connection, client private IP addresses are included in this candidate collection. However, disclosure of these addresses has privacy implications.  This document describes a way to share local IP addresses with other clients while preserving client privacy. This is achieved by concealing IP addresses with dynamically generated Multicast DNS (mDNS) names." />
   <meta name="description" content="WebRTC applications collect ICE candidates as part of the process of creating peer-to-peer connections. To maximize the probability of a direct peer-to-peer connection, client private IP addresses are included in this candidate collection. However, disclosure of these addresses has privacy implications.  This document describes a way to share local IP addresses with other clients while preserving client privacy. This is achieved by concealing IP addresses with dynamically generated Multicast DNS (mDNS) names." />
 
@@ -345,7 +345,7 @@ ul.toc li {
 <td class="right">J. de Borst</td>
 </tr>
 <tr>
-<td class="left">Expires: August 30, 2019</td>
+<td class="left">Expires: September 1, 2019</td>
 <td class="right">J. Uberti</td>
 </tr>
 <tr>
@@ -358,7 +358,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">February 26, 2019</td>
+<td class="right">February 28, 2019</td>
 </tr>
 
     	
@@ -374,7 +374,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on August 30, 2019.</p>
+<p>This Internet-Draft will expire on September 1, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -535,19 +535,19 @@ ul.toc li {
 </h1>
 <p id="rfc.section.5.1.p.1">In this example, mDNS candidates are exchanged between peers and resolved normally to obtain the corresponding IP addresses.</p>
 <pre>
-              ICE Agent 1 (1.1.1.1)             ICE Agent 2 (2.2.2.2)
-        &lt;Register     |                                 |
-         mDNS name N1 |                                 |
-         for 1.1.1.1&gt; |                                 |
+           ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
+       &lt;Register mDNS |                                 |
+         name N1,     |                                 |
+         192.0.2.1&gt;   |                                 |
                       |------- mDNS Candidate N1 ------&gt;|
-                      |                                 | &lt;Register
-                      |                                 |  mDNS name N2
-                      |                                 |  for 2.2.2.2&gt;
+                      |                                 | &lt;Register mDNS
+                      |                                 |  name N2,
+                      |                                 |  192.0.2.2&gt;
                       |&lt;------ mDNS Candidate N2 -------|
        &lt;Resolve       |                                 | &lt;Resolve
         mDNS name N2&gt; |                                 |  mDNS name N1&gt;
-                      |&lt;==== STUN check to 1.1.1.1 =====|
-                      |===== STUN check to 2.2.2.2 ====&gt;|
+                      |&lt;=== STUN check to 192.0.2.1 ====|
+                      |==== STUN check to 192.0.2.2 ===&gt;|
                       |                                 |
 </pre>
 <p id="rfc.section.5.1.p.2">The exchange of ICE candidates relies on out-of-band signaling, for example, the SDP Offer/Answer procedure defined in <a href="#ICESDP" class="xref">[ICESDP]</a>. In the above example, the candidate attributes in the SDP messages to exchange the mDNS candidates between ICE Agent 1 and 2 are as follows:</p>
@@ -566,17 +566,17 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 </h1>
 <p id="rfc.section.5.2.p.1">In this example, a peer-reflexive candidate is generated because the mDNS candidate is signaled after the STUN checks begin.</p>
 <pre>
-              ICE Agent 1 (1.1.1.1)             ICE Agent 2 (2.2.2.2)
-        &lt;Register     |                                 |
-         mDNS name N1 |                                 |
-         for 1.1.1.1&gt; |                                 |
+           ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
+       &lt;Register mDNS |                                 |
+         name N1,     |                                 |
+         192.0.2.1&gt;   |                                 |
                       |------- mDNS Candidate N1 ------&gt;|
                       |                                 | &lt;Resolve
                       |                                 |  mDNS name N1&gt;
-                      |&lt;==== STUN check to 1.1.1.1 =====|
-      prflx candidate |                                 | &lt;Register
-      2.2.2.2 created |                                 |  mDNS name N2
-                      |                                 |  for 2.2.2.2&gt;
+                      |&lt;=== STUN check to 192.0.2.1 ====|
+      prflx candidate |                                 | &lt;Register mDNS
+    192.0.2.2 created |                                 |  name N2,
+                      |                                 |  192.0.2.2&gt;
                       |&lt;------ mDNS Candidate N2 -------|
                       |                                 |
 </pre>
@@ -585,18 +585,18 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 </h1>
 <p id="rfc.section.5.3.p.1">In this example, a peer-reflexive candidate is generated because the mDNS resolution for name N2 does not complete until after the STUN checks are received.</p>
 <pre>
-              ICE Agent 1 (1.1.1.1)             ICE Agent 2 (2.2.2.2)
-        &lt;Register     |                                 | &lt;Register
-         mDNS name N1 |                                 |  mDNS name N2
-         for 1.1.1.1&gt; |                                 |  for 2.2.2.2&gt;
+           ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
+       &lt;Register mDNS |                                 | &lt;Register mDNS
+         name N1,     |                                 |  name N2,
+         192.0.2.1&gt;   |                                 |  192.0.2.2&gt;
                       |------- mDNS Candidate N1 ------&gt;|
                       |&lt;------ mDNS Candidate N2 -------|
 &lt;Resolve              |                                 | &lt;Resolve
- ...                  |                                 |  mDNS name N1&gt;
- mDNS                 |&lt;==== STUN check to 1.1.1.1 =====|
- ...  prflx candidate |                                 |
- name 2.2.2.2 created |                                 |
- ...                  |                                 |
+ mDNS                 |                                 |  mDNS name N1&gt;
+  .                   |&lt;=== STUN check to 192.0.2.1 ====|
+  .   prflx candidate |                                 |
+  . 192.0.2.2 created |                                 |
+ name                 |                                 |
  N2&gt;                  |                                 |
 </pre>
 <h1 id="rfc.section.5.4">

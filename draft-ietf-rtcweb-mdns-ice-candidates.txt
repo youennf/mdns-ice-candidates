@@ -5,10 +5,10 @@
 RTCWEB                                                         Y. Fablet
 Internet-Draft                                                Apple Inc.
 Intended status: Informational                               J. de Borst
-Expires: August 30, 2019                                       J. Uberti
+Expires: September 1, 2019                                     J. Uberti
                                                                  Q. Wang
                                                                   Google
-                                                       February 26, 2019
+                                                       February 28, 2019
 
 
   Using Multicast DNS to protect privacy when exposing ICE candidates
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 30, 2019.
+   This Internet-Draft will expire on September 1, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 1]
+Fablet, et al.          Expires September 1, 2019               [Page 1]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 2]
+Fablet, et al.          Expires September 1, 2019               [Page 2]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 3]
+Fablet, et al.          Expires September 1, 2019               [Page 3]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -221,7 +221,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 4]
+Fablet, et al.          Expires September 1, 2019               [Page 4]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -277,7 +277,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 5]
+Fablet, et al.          Expires September 1, 2019               [Page 5]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -333,7 +333,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 6]
+Fablet, et al.          Expires September 1, 2019               [Page 6]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -351,19 +351,19 @@ Internet-Draft             mdns-ice-candidates             February 2019
    In this example, mDNS candidates are exchanged between peers and
    resolved normally to obtain the corresponding IP addresses.
 
-              ICE Agent 1 (1.1.1.1)             ICE Agent 2 (2.2.2.2)
-        <Register     |                                 |
-         mDNS name N1 |                                 |
-         for 1.1.1.1> |                                 |
+           ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
+       <Register mDNS |                                 |
+         name N1,     |                                 |
+         192.0.2.1>   |                                 |
                       |------- mDNS Candidate N1 ------>|
-                      |                                 | <Register
-                      |                                 |  mDNS name N2
-                      |                                 |  for 2.2.2.2>
+                      |                                 | <Register mDNS
+                      |                                 |  name N2,
+                      |                                 |  192.0.2.2>
                       |<------ mDNS Candidate N2 -------|
        <Resolve       |                                 | <Resolve
         mDNS name N2> |                                 |  mDNS name N1>
-                      |<==== STUN check to 1.1.1.1 =====|
-                      |===== STUN check to 2.2.2.2 ====>|
+                      |<=== STUN check to 192.0.2.1 ====|
+                      |==== STUN check to 192.0.2.2 ===>|
                       |                                 |
 
    The exchange of ICE candidates relies on out-of-band signaling, for
@@ -389,7 +389,7 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 7]
+Fablet, et al.          Expires September 1, 2019               [Page 7]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -399,17 +399,17 @@ Internet-Draft             mdns-ice-candidates             February 2019
    In this example, a peer-reflexive candidate is generated because the
    mDNS candidate is signaled after the STUN checks begin.
 
-              ICE Agent 1 (1.1.1.1)             ICE Agent 2 (2.2.2.2)
-        <Register     |                                 |
-         mDNS name N1 |                                 |
-         for 1.1.1.1> |                                 |
+           ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
+       <Register mDNS |                                 |
+         name N1,     |                                 |
+         192.0.2.1>   |                                 |
                       |------- mDNS Candidate N1 ------>|
                       |                                 | <Resolve
                       |                                 |  mDNS name N1>
-                      |<==== STUN check to 1.1.1.1 =====|
-      prflx candidate |                                 | <Register
-      2.2.2.2 created |                                 |  mDNS name N2
-                      |                                 |  for 2.2.2.2>
+                      |<=== STUN check to 192.0.2.1 ====|
+      prflx candidate |                                 | <Register mDNS
+    192.0.2.2 created |                                 |  name N2,
+                      |                                 |  192.0.2.2>
                       |<------ mDNS Candidate N2 -------|
                       |                                 |
 
@@ -419,18 +419,18 @@ Internet-Draft             mdns-ice-candidates             February 2019
    mDNS resolution for name N2 does not complete until after the STUN
    checks are received.
 
-              ICE Agent 1 (1.1.1.1)             ICE Agent 2 (2.2.2.2)
-        <Register     |                                 | <Register
-         mDNS name N1 |                                 |  mDNS name N2
-         for 1.1.1.1> |                                 |  for 2.2.2.2>
+           ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
+       <Register mDNS |                                 | <Register mDNS
+         name N1,     |                                 |  name N2,
+         192.0.2.1>   |                                 |  192.0.2.2>
                       |------- mDNS Candidate N1 ------>|
                       |<------ mDNS Candidate N2 -------|
 <Resolve              |                                 | <Resolve
- ...                  |                                 |  mDNS name N1>
- mDNS                 |<==== STUN check to 1.1.1.1 =====|
- ...  prflx candidate |                                 |
- name 2.2.2.2 created |                                 |
- ...                  |                                 |
+ mDNS                 |                                 |  mDNS name N1>
+  .                   |<=== STUN check to 192.0.2.1 ====|
+  .   prflx candidate |                                 |
+  . 192.0.2.2 created |                                 |
+ name                 |                                 |
  N2>                  |                                 |
 
 5.4.  IPv4, IPv6, and STUN handling
@@ -445,7 +445,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 8]
+Fablet, et al.          Expires September 1, 2019               [Page 8]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -501,7 +501,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019                [Page 9]
+Fablet, et al.          Expires September 1, 2019               [Page 9]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -557,7 +557,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 10]
+Fablet, et al.          Expires September 1, 2019              [Page 10]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -613,7 +613,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 11]
+Fablet, et al.          Expires September 1, 2019              [Page 11]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -669,7 +669,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 12]
+Fablet, et al.          Expires September 1, 2019              [Page 12]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -725,7 +725,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 13]
+Fablet, et al.          Expires September 1, 2019              [Page 13]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -781,7 +781,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 14]
+Fablet, et al.          Expires September 1, 2019              [Page 14]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -837,7 +837,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 15]
+Fablet, et al.          Expires September 1, 2019              [Page 15]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -893,7 +893,7 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 16]
+Fablet, et al.          Expires September 1, 2019              [Page 16]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -949,7 +949,7 @@ Authors' Addresses
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 17]
+Fablet, et al.          Expires September 1, 2019              [Page 17]
 
 Internet-Draft             mdns-ice-candidates             February 2019
 
@@ -1005,4 +1005,4 @@ Internet-Draft             mdns-ice-candidates             February 2019
 
 
 
-Fablet, et al.           Expires August 30, 2019               [Page 18]
+Fablet, et al.          Expires September 1, 2019              [Page 18]
