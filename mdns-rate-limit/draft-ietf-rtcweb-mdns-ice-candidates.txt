@@ -91,15 +91,15 @@ Table of Contents
      6.7.  Network Interface Enumeration . . . . . . . . . . . . . .  13
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
      7.1.  mDNS Message Flooding . . . . . . . . . . . . . . . . . .  13
-     7.2.  Malicious Responses to Deny Name Registration . . . . . .  14
+     7.2.  Malicious Responses to Deny Name Registration . . . . . .  15
      7.3.  Monitoring of Sessions  . . . . . . . . . . . . . . . . .  15
      7.4.  Unsolicited ICE Communications  . . . . . . . . . . . . .  15
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   9.  Specification Requirements  . . . . . . . . . . . . . . . . .  15
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+   9.  Specification Requirements  . . . . . . . . . . . . . . . . .  16
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  16
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  16
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
 
@@ -761,7 +761,39 @@ Internet-Draft             mdns-ice-candidates                March 2019
    message rate limit MUST be provided for all messages that can be
    indirectly dispatched by a web application, namely the probing
    queries, announcement responses, resolution queries, and goodbye
-   responses associated with mDNS.
+   responses associated with mDNS.  In addition to the multicast rate
+   limiting defined in [RFC6762], for all mDNS queries including the
+   probing queries, the interval between any two queries SHOULD be at
+   least one second.  For mDNS responses, we recommend the following
+   rate limiting scheme that applies different restrictions based on the
+   mDNS message type.
+
+   1.  Per-response rate limiting.  Announcement ([RFC6762],
+       Section 8.3) and goodbye ([RFC6762], Section 10.1) responses
+       SHOULD be limited per response on each interface so that the time
+       elapsed between any two transmissions of mDNS responses
+       containing the above messages is no less than one second on the
+       given interface.
+
+   2.  Per-record rate limiting.  Responses containing resource records
+       for name resolution, and also negative responses to non-probing
+       queries for non-existing records of generated mDNS names, SHOULD
+
+
+
+Fablet, et al.          Expires September 7, 2019              [Page 14]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
+       be rate limited per record.  The time elapsed of any contained
+       record must be no less than one second from the last time that a
+       per-record rate-limited response that also contains this record
+       is transmitted.
+
+   3.  No rate limiting.  Response, including negative responses, to
+       probing queries SHOULD be sent without delay ([RFC6762],
+       Section 6).
 
 7.2.  Malicious Responses to Deny Name Registration
 
@@ -777,15 +809,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    uniqueness (e.g. a version 4 UUID) in Step 3 in Section 3.1.
    However, a similar attack can be performed by exploiting the negative
    responses (defined in [RFC6762], Section 8.1), in which NSEC resource
-
-
-
-
-Fablet, et al.          Expires September 7, 2019              [Page 14]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    records are sent to claim the nonexistence of records related to the
    gathered ICE host candidates.
 
@@ -810,6 +833,15 @@ Internet-Draft             mdns-ice-candidates                March 2019
    As noted in Section 4.2 of [RTCWebSecurity], an attacker may use ICE
    as a way to send unsolicited network traffic to specific endpoints.
    While this is not specific to mDNS hostname candidates, this
+
+
+
+
+Fablet, et al.          Expires September 7, 2019              [Page 15]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    technique makes it easier to target devices with well-known mDNS
    names.
 
@@ -834,14 +866,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    The proposal allows updating [IPHandling] so that mode 2 is not the
    mode used by default when user consent is not required.  Instead, the
-
-
-
-Fablet, et al.          Expires September 7, 2019              [Page 15]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    default mode could be defined as mode 3 with mDNS-based ICE
    candidates.
 
@@ -863,6 +887,16 @@ Internet-Draft             mdns-ice-candidates                March 2019
               Extensions for Stateless Address Autoconfiguration in
               IPv6", RFC 4941, DOI 10.17487/RFC4941, September 2007,
               <https://www.rfc-editor.org/info/rfc4941>.
+
+
+
+
+
+
+Fablet, et al.          Expires September 7, 2019              [Page 16]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
 
    [RFC5389]  Rosenberg, J., Mahy, R., Matthews, P., and D. Wing,
               "Session Traversal Utilities for NAT (STUN)", RFC 5389,
@@ -891,13 +925,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
               "HTML Living Standard", n.d.,
               <https://html.spec.whatwg.org>.
 
-
-
-Fablet, et al.          Expires September 7, 2019              [Page 16]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    [ICESDP]   Keranen, A., "Session Description Protocol (SDP) Offer/
               Answer procedures for Interactive Connectivity
               Establishment (ICE)", April 2018,
@@ -918,6 +945,14 @@ Internet-Draft             mdns-ice-candidates                March 2019
               and E. Lear, "Address Allocation for Private Internets",
               BCP 5, RFC 1918, DOI 10.17487/RFC1918, February 1996,
               <https://www.rfc-editor.org/info/rfc1918>.
+
+
+
+
+Fablet, et al.          Expires September 7, 2019              [Page 17]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
 
    [RFC6146]  Bagnulo, M., Matthews, P., and I. van Beijnum, "Stateful
               NAT64: Network Address and Protocol Translation from IPv6
@@ -947,13 +982,6 @@ Authors' Addresses
    Email: jeroendb@google.com
 
 
-
-
-Fablet, et al.          Expires September 7, 2019              [Page 17]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    Justin Uberti
    Google
 
@@ -964,34 +992,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    Google
 
    Email: qingsi@google.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
