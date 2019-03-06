@@ -477,7 +477,7 @@ ul.toc li {
 
 <ol>
 <li>Check whether this IP address satisfies the ICE agent&#8217;s policy regarding whether an address is safe to expose. If so, expose the candidate and abort this process.</li>
-<li>Check whether the ICE agent has previously generated, registered and stored a mDNS hostname for this IP address per steps 3, 4 and 6. If one exists, skip ahead to Step 7.</li>
+<li>Check whether the ICE agent has previously generated, registered and stored a mDNS hostname for this IP address per Steps 3, 4 and 6. If one exists, skip ahead to Step 7.</li>
 <li>Generate a unique mDNS hostname. The unique name MUST consist of a version 4 UUID as defined in <a href="#RFC4122" class="xref">[RFC4122]</a>, followed by &#8220;.local&#8221;.</li>
 <li>Register the candidate&#8217;s mDNS hostname as defined in <a href="#RFC6762" class="xref">[RFC6762]</a>.</li>
 <li>If registering of the mDNS hostname fails, abort these steps. The candidate is not exposed.</li>
