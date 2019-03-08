@@ -319,13 +319,13 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 4.3.  Backward Compatibility
 
-   Note that backward compatibility does not present a significant issue
-   for the mDNS technique.  When an endpoint that supports mDNS
-   communicates with an endpoint that does not, the legacy endpoint will
-   still provide its local IP addresses, and accordingly a direct
-   connection can still be attempted, even though the legacy endpoint
-   cannot resolve the mDNS names provided by the new endpoint.  In the
-   event the legacy endpoint attempts to resolve mDNS names using
+   For the most part, backward compatibility does not present a
+   significant issue for the mDNS technique.  When an endpoint that
+   supports mDNS communicates with an endpoint that does not, the legacy
+   endpoint will still provide its local IP addresses, and accordingly a
+   direct connection can still be attempted, even though the legacy
+   endpoint cannot resolve the mDNS names provided by the new endpoint.
+   In the event the legacy endpoint attempts to resolve mDNS names using
    Unicast DNS, this may cause ICE to take somewhat longer to fully
    complete, but should not have any effect on connectivity or
    connection setup time.
@@ -337,6 +337,12 @@ Fablet, et al.          Expires September 9, 2019               [Page 6]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
+
+   However, some legacy endpoints are not fully spec-compliant and can
+   behave unpredictably in the presence of ICE candidates that contain a
+   hostname, potentially leading to ICE failure.  Such endpoints have
+   been identified during testing of this technique, but appear to be
+   rare.
 
 5.  Examples
 
@@ -379,12 +385,6 @@ a=candidate:1 1 udp 2122262783 1f4712db-ea17-4bcf-a596-105139dfd8bf.local
 
    ICE Agent 2:
 
-a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
-  61606 typ host
-
-
-
-
 
 
 
@@ -393,6 +393,9 @@ Fablet, et al.          Expires September 9, 2019               [Page 7]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
+
+a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
+  61606 typ host
 
 5.2.  Peer-reflexive Candidate From Slow Signaling
 
@@ -440,9 +443,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    address.  They preregister their mDNS names to speed up ICE
    gathering.
 
-               ICE Agent 1                        ICE Agent 2
-               192.168.1.1         STUN           192.168.1.2
-
 
 
 Fablet, et al.          Expires September 9, 2019               [Page 8]
@@ -450,6 +450,8 @@ Fablet, et al.          Expires September 9, 2019               [Page 8]
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
+               ICE Agent 1                        ICE Agent 2
+               192.168.1.1         STUN           192.168.1.2
                2001:db8::1        Server          2001:db8::2
   ----------------------------------------------------------------------
                       Pre-registration of mDNS names
@@ -496,8 +498,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
                    |                |                 |
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     ICE Agent 2 sends server-reflexive candidates, resolution completes
-                   |                |                 |
-                   |                |<--Binding Req---| <192.168.1.2
 
 
 
@@ -506,6 +506,8 @@ Fablet, et al.          Expires September 9, 2019               [Page 9]
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
+                   |                |                 |
+                   |                |<--Binding Req---| <192.168.1.2
                    |                |---Binding Resp->|  is 192.0.2.2>
                    |<----- srflx Candidate C2.3 ------| <192.0.2.2>
                    |                |<--Binding Req---| <2001:db8::2
@@ -550,8 +552,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
                      40004 typ srflx raddr 0.0.0.0 rport 0
      C2.4: candidate:2 1 udp 1686054911 2001:db8::2
                      20006 typ srflx raddr 0.0.0.0 rport 0
-
-
 
 
 
