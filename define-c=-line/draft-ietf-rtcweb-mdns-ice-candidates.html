@@ -321,7 +321,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Fablet, Y., de Borst, J., Uberti, J., and Q. Wang" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-rtcweb-mdns-ice-candidates-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-03-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-03-09" />
   <meta name="dct.abstract" content="WebRTC applications collect ICE candidates as part of the process of creating peer-to-peer connections. To maximize the probability of a direct peer-to-peer connection, client private IP addresses are included in this candidate collection. However, disclosure of these addresses has privacy implications.  This document describes a way to share local IP addresses with other clients while preserving client privacy. This is achieved by concealing IP addresses with dynamically generated Multicast DNS (mDNS) names." />
   <meta name="description" content="WebRTC applications collect ICE candidates as part of the process of creating peer-to-peer connections. To maximize the probability of a direct peer-to-peer connection, client private IP addresses are included in this candidate collection. However, disclosure of these addresses has privacy implications.  This document describes a way to share local IP addresses with other clients while preserving client privacy. This is achieved by concealing IP addresses with dynamically generated Multicast DNS (mDNS) names." />
 
@@ -345,7 +345,7 @@ ul.toc li {
 <td class="right">J. de Borst</td>
 </tr>
 <tr>
-<td class="left">Expires: September 7, 2019</td>
+<td class="left">Expires: September 10, 2019</td>
 <td class="right">J. Uberti</td>
 </tr>
 <tr>
@@ -358,7 +358,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">March 06, 2019</td>
+<td class="right">March 09, 2019</td>
 </tr>
 
     	
@@ -374,7 +374,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 7, 2019.</p>
+<p>This Internet-Draft will expire on September 10, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -490,6 +490,7 @@ ul.toc li {
 <p id="rfc.section.3.1.p.7">This procedure ensures that an mDNS name is used to replace only one IP address.  Specifically, an ICE agent using an interface with both IPv4 and IPv6 addresses MUST expose a different mDNS name for each address.</p>
 <p id="rfc.section.3.1.p.8">Any server-reflexive candidates generated from an mDNS local candidate MUST have their raddr field set to 0.0.0.0 and their rport field set to 0.</p>
 <p id="rfc.section.3.1.p.9">Any candidates exposed to the web application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
+<p id="rfc.section.3.1.p.10">The mDNS name of an mDNS candidate MUST be used in its connection-address field in the SDP. When an mDNS candidate is the default candidate, its mDNS name MUST be used in the connection-address field of the &#8220;c=&#8221; line in the SDP. Since an mDNS candidate also conceals its address family, the corresponding &#8220;c=&#8221; line SHOULD use &#8220;IP4&#8221; in the address-type field.</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#processing" id="processing">ICE Candidate Processing</a>
 </h1>
@@ -786,9 +787,8 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#requirements" id="requirements">Specification Requirements</a>
 </h1>
-<p id="rfc.section.9.p.1">The proposal relies on identifying and resolving any mDNS-based ICE candidates as part of adding/processing a remote candidate. <a href="#ICESDP" class="xref">[ICESDP]</a> section 4.1 could be updated to explicitly allow mDNS names in the connection-address sub-field of a connection-data field (&#8220;c=&#8221; line). Since an mDNS name also conceals the address family, the corresponding &#8220;c=&#8221; line must use either &#8220;IP4&#8221; or &#8220;IP6&#8221; in the address-type sub-field when an mDNS name is used in the connection-address sub-field. &#8220;IP4&#8221; could be the default value.</p>
-<p id="rfc.section.9.p.2">The proposal relies on adding the ability to register mDNS names at ICE gathering time. This could be described in <a href="#ICESDP" class="xref">[ICESDP]</a> and/or <a href="#WebRTCSpec" class="xref">[WebRTCSpec]</a>.</p>
-<p id="rfc.section.9.p.3">The proposal allows updating <a href="#IPHandling" class="xref">[IPHandling]</a> so that mode 2 is not the mode used by default when user consent is not required. Instead, the default mode could be defined as mode 3 with mDNS-based ICE candidates.</p>
+<p id="rfc.section.9.p.1">The proposal relies on adding the ability to register mDNS names at ICE gathering time. This could be described in <a href="#ICESDP" class="xref">[ICESDP]</a> and/or <a href="#WebRTCSpec" class="xref">[WebRTCSpec]</a>.</p>
+<p id="rfc.section.9.p.2">The proposal allows updating <a href="#IPHandling" class="xref">[IPHandling]</a> so that mode 2 is not the mode used by default when user consent is not required. Instead, the default mode could be defined as mode 3 with mDNS-based ICE candidates.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">10.</a> References</h1>
 <h1 id="rfc.references.1">
