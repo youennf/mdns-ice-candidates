@@ -321,7 +321,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Fablet, Y., de Borst, J., Uberti, J., and Q. Wang" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-rtcweb-mdns-ice-candidates-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-03-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-03-09" />
   <meta name="dct.abstract" content="WebRTC applications collect ICE candidates as part of the process of creating peer-to-peer connections. To maximize the probability of a direct peer-to-peer connection, client private IP addresses are included in this candidate collection. However, disclosure of these addresses has privacy implications.  This document describes a way to share local IP addresses with other clients while preserving client privacy. This is achieved by concealing IP addresses with dynamically generated Multicast DNS (mDNS) names." />
   <meta name="description" content="WebRTC applications collect ICE candidates as part of the process of creating peer-to-peer connections. To maximize the probability of a direct peer-to-peer connection, client private IP addresses are included in this candidate collection. However, disclosure of these addresses has privacy implications.  This document describes a way to share local IP addresses with other clients while preserving client privacy. This is achieved by concealing IP addresses with dynamically generated Multicast DNS (mDNS) names." />
 
@@ -345,7 +345,7 @@ ul.toc li {
 <td class="right">J. de Borst</td>
 </tr>
 <tr>
-<td class="left">Expires: September 9, 2019</td>
+<td class="left">Expires: September 10, 2019</td>
 <td class="right">J. Uberti</td>
 </tr>
 <tr>
@@ -358,7 +358,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">March 08, 2019</td>
+<td class="right">March 09, 2019</td>
 </tr>
 
     	
@@ -374,7 +374,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 9, 2019.</p>
+<p>This Internet-Draft will expire on September 10, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -477,7 +477,7 @@ ul.toc li {
 
 <ol>
 <li>Check whether this IP address satisfies the ICE agent&#8217;s policy regarding whether an address is safe to expose. If so, expose the candidate and abort this process.</li>
-<li>Check whether the ICE agent has previously generated, registered, and stored an mDNS hostname for this IP address as per Steps 3, 4, and 6. If it has, skip ahead to Step 7.</li>
+<li>Check whether the ICE agent has a usable registered mDNS hostname resolving to the ICE candidate&#8217;s IP address. If one exists, skip ahead to Step 6.</li>
 <li>Generate a unique mDNS hostname. The unique name MUST consist of a version 4 UUID as defined in <a href="#RFC4122" class="xref">[RFC4122]</a>, followed by &#8220;.local&#8221;.</li>
 <li>Register the candidate&#8217;s mDNS hostname as defined in <a href="#RFC6762" class="xref">[RFC6762]</a>.</li>
 <li>If registering of the mDNS hostname fails, abort these steps. The candidate is not exposed.</li>
@@ -504,7 +504,7 @@ ul.toc li {
 <li>Otherwise, ignore the candidate.</li>
 </ol>
 <p id="rfc.section.3.2.p.4">An ICE agent may use a hostname resolver that transparently supports both Multicast and Unicast DNS. In this case the resolution of a &#8220;.local&#8221; name may happen through Unicast DNS as noted in <a href="#RFC6762" class="xref">[RFC6762]</a>, Section 3.</p>
-<p id="rfc.section.3.2.p.5">An ICE agent that supports mDNS candidates MUST support the situation where the hostname resolution results in more than one IP address. In this case, the ICE agent MUST take exactly one of the resolved IP addresses and ignore the others.  The ICE agent MUST do this using an algorithm that consistently selects the same IP address, independent of the order of the IP addresses in the resolution results. This algorithm SHOULD select an IPv6 address when present.</p>
+<p id="rfc.section.3.2.p.5">An ICE agent SHOULD ignore candidates where the hostname resolution returns more than one IP address.</p>
 <p id="rfc.section.3.2.p.6">An ICE agent MAY add additional restrictions regarding the ICE candidates it will resolve using mDNS, as this mechanism allows attackers to send ICE traffic to devices with well-known mDNS names.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#limitations" id="limitations">Limitations</a>
