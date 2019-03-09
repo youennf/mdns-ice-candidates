@@ -5,10 +5,10 @@
 RTCWEB                                                         Y. Fablet
 Internet-Draft                                                Apple Inc.
 Intended status: Informational                               J. de Borst
-Expires: September 9, 2019                                     J. Uberti
+Expires: September 10, 2019                                    J. Uberti
                                                                  Q. Wang
                                                                   Google
-                                                          March 08, 2019
+                                                          March 09, 2019
 
 
   Using Multicast DNS to protect privacy when exposing ICE candidates
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 9, 2019.
+   This Internet-Draft will expire on September 10, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 1]
+Fablet, et al.         Expires September 10, 2019               [Page 1]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -91,15 +91,15 @@ Table of Contents
      6.7.  Network Interface Enumeration . . . . . . . . . . . . . .  13
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
      7.1.  mDNS Message Flooding . . . . . . . . . . . . . . . . . .  13
-     7.2.  Malicious Responses to Deny Name Registration . . . . . .  15
+     7.2.  Malicious Responses to Deny Name Registration . . . . . .  14
      7.3.  Monitoring of Sessions  . . . . . . . . . . . . . . . . .  15
      7.4.  Unsolicited ICE Communications  . . . . . . . . . . . . .  15
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-   9.  Specification Requirements  . . . . . . . . . . . . . . . . .  16
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   9.  Specification Requirements  . . . . . . . . . . . . . . . . .  15
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  16
      10.2.  Informative References . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 2]
+Fablet, et al.         Expires September 10, 2019               [Page 2]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 3]
+Fablet, et al.         Expires September 10, 2019               [Page 3]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -221,7 +221,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 4]
+Fablet, et al.         Expires September 10, 2019               [Page 4]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -277,7 +277,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 5]
+Fablet, et al.         Expires September 10, 2019               [Page 5]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -333,7 +333,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 6]
+Fablet, et al.         Expires September 10, 2019               [Page 6]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -389,7 +389,7 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 7]
+Fablet, et al.         Expires September 10, 2019               [Page 7]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -445,7 +445,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 8]
+Fablet, et al.         Expires September 10, 2019               [Page 8]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -501,7 +501,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 9]
+Fablet, et al.         Expires September 10, 2019               [Page 9]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -557,7 +557,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 10]
+Fablet, et al.         Expires September 10, 2019              [Page 10]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -613,7 +613,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 11]
+Fablet, et al.         Expires September 10, 2019              [Page 11]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -669,7 +669,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 12]
+Fablet, et al.         Expires September 10, 2019              [Page 12]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -725,7 +725,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 13]
+Fablet, et al.         Expires September 10, 2019              [Page 13]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -761,39 +761,9 @@ Internet-Draft             mdns-ice-candidates                March 2019
    message rate limit MUST be provided for all messages that can be
    indirectly dispatched by a web application, namely the probing
    queries, announcement responses, resolution queries, and goodbye
-   responses associated with mDNS.  In addition to the multicast rate
-   limiting defined in [RFC6762], for all mDNS queries including the
-   probing queries, the interval between any two queries SHOULD be at
-   least one second.  For mDNS responses, we recommend the following
-   rate limiting scheme that applies different restrictions based on the
-   mDNS message type.
-
-   1.  Per-response rate limiting.  Announcement ([RFC6762],
-       Section 8.3) and goodbye ([RFC6762], Section 10.1) responses
-       SHOULD be limited per-response on each interface so that the time
-       elapsed between any two transmissions of mDNS responses
-       containing the above messages is no less than one second on the
-       given interface.
-
-   2.  Per-record rate limiting.  Responses containing resource records
-       for name resolution, as well as negative responses to non-probing
-       queries for non-existing records of generated mDNS names, SHOULD
-
-
-
-Fablet, et al.          Expires September 9, 2019              [Page 14]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
-       be rate limited per record.  The time elapsed of any contained
-       record must be no less than one second from the last time that a
-       per-record rate-limited response that also contains this record
-       is transmitted.
-
-   3.  No rate limiting.  Responses to probing queries, including
-       negative responses, SHOULD be sent without delay ([RFC6762],
-       Section 6).
+   responses associated with mDNS.  Such a rate limiting rule SHOULD NOT
+   allow responses from an origin to queries for the ICE candidate
+   processing blocked by mDNS messages from a different origin.
 
 7.2.  Malicious Responses to Deny Name Registration
 
@@ -808,6 +778,14 @@ Internet-Draft             mdns-ice-candidates                March 2019
    given that the name is randomly generated for the probabilistic
    uniqueness (e.g. a version 4 UUID) in Step 3 in Section 3.1.
    However, a similar attack can be performed by exploiting the negative
+
+
+
+Fablet, et al.         Expires September 10, 2019              [Page 14]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    responses (defined in [RFC6762], Section 8.1), in which NSEC resource
    records are sent to claim the nonexistence of records related to the
    gathered ICE host candidates.
@@ -833,15 +811,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    As noted in Section 4.2 of [RTCWebSecurity], an attacker may use ICE
    as a way to send unsolicited network traffic to specific endpoints.
    While this is not specific to mDNS hostname candidates, this
-
-
-
-
-Fablet, et al.          Expires September 9, 2019              [Page 15]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    technique makes it easier to target devices with well-known mDNS
    names.
 
@@ -863,6 +832,15 @@ Internet-Draft             mdns-ice-candidates                March 2019
    The proposal relies on adding the ability to register mDNS names at
    ICE gathering time.  This could be described in [ICESDP] and/or
    [WebRTCSpec].
+
+
+
+
+
+Fablet, et al.         Expires September 10, 2019              [Page 15]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
 
    The proposal allows updating [IPHandling] so that mode 2 is not the
    mode used by default when user consent is not required.  Instead, the
@@ -888,16 +866,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
               IPv6", RFC 4941, DOI 10.17487/RFC4941, September 2007,
               <https://www.rfc-editor.org/info/rfc4941>.
 
-
-
-
-
-
-Fablet, et al.          Expires September 9, 2019              [Page 16]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    [RFC5389]  Rosenberg, J., Mahy, R., Matthews, P., and D. Wing,
               "Session Traversal Utilities for NAT (STUN)", RFC 5389,
               DOI 10.17487/RFC5389, October 2008,
@@ -918,6 +886,17 @@ Internet-Draft             mdns-ice-candidates                March 2019
               Address Translator (NAT) Traversal", RFC 8445,
               DOI 10.17487/RFC8445, July 2018,
               <https://www.rfc-editor.org/info/rfc8445>.
+
+
+
+
+
+
+
+Fablet, et al.         Expires September 10, 2019              [Page 16]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
 
 10.2.  Informative References
 
@@ -946,14 +925,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
               BCP 5, RFC 1918, DOI 10.17487/RFC1918, February 1996,
               <https://www.rfc-editor.org/info/rfc1918>.
 
-
-
-
-Fablet, et al.          Expires September 9, 2019              [Page 17]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    [RFC6146]  Bagnulo, M., Matthews, P., and I. van Beijnum, "Stateful
               NAT64: Network Address and Protocol Translation from IPv6
               Clients to IPv4 Servers", RFC 6146, DOI 10.17487/RFC6146,
@@ -974,6 +945,13 @@ Authors' Addresses
    Apple Inc.
 
    Email: youenn@apple.com
+
+
+
+
+Fablet, et al.         Expires September 10, 2019              [Page 17]
+
+Internet-Draft             mdns-ice-candidates                March 2019
 
 
    Jeroen de Borst
@@ -1005,4 +983,26 @@ Authors' Addresses
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 18]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fablet, et al.         Expires September 10, 2019              [Page 18]
