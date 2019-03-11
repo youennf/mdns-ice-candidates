@@ -84,7 +84,7 @@ table.header td, table#rfc\.headerblock td {
 }
 
 samp, tt, code, pre {
-  font: 13.5px Consolas, monospace;
+  font: 15px Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -315,7 +315,7 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.21.0 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.21.1 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Fablet, Y., de Borst, J., Uberti, J., and Q. Wang" />
@@ -485,8 +485,9 @@ ul.toc li {
 <p id="rfc.section.3.1.p.5">ICE agents may also decide that certain local IP addresses are safe to expose. This may be because the ICE agent has a priori knowledge that the address is in fact public, or because the agent has made a policy decision to not conceal certain types of IP addresses (e.g., those with built-in privacy protections) as a calculated choice to improve connectivity. This topic is discussed further in {#privacy} below.</p>
 <p id="rfc.section.3.1.p.6">An implementation may also detect that mDNS is not supported by the available network interfaces. The ICE agent may skip steps 3 and 4 and directly decide to not expose the host candidate.</p>
 <p id="rfc.section.3.1.p.7">This procedure ensures that an mDNS name is used to replace only one IP address.  Specifically, an ICE agent using an interface with both IPv4 and IPv6 addresses MUST expose a different mDNS name for each address.</p>
-<p id="rfc.section.3.1.p.8">Note that any server-reflexive candidates generated from an mDNS host candidate will have IP addresses as their transport addresses, rather than mDNS hostnames. Because their transport addresses are different (i.e., not hostnames), they MUST NOT be considered redundant with their host counterparts, per the guidance in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.3. To avoid accidental leakage, these candidates MUST have their raddr field set to 0.0.0.0 and their rport field set to 0.</p>
-<p id="rfc.section.3.1.p.9">Any candidates exposed to the web application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
+<p id="rfc.section.3.1.p.8">The mDNS name of an mDNS candidate MUST be used in the connection-address field of its candidate attribute. When an mDNS candidate is the default candidate, its mDNS name MUST be used in the connection-address field of the SDP &#8220;c=&#8221; line.  Since an mDNS candidate also conceals its address family, the &#8220;c=&#8221; line SHOULD use &#8220;IP4&#8221; in the address-type field.</p>
+<p id="rfc.section.3.1.p.9">Note that any server-reflexive candidates generated from an mDNS host candidate will have IP addresses as their transport addresses, rather than mDNS hostnames. Because their transport addresses are different (i.e., not hostnames), they MUST NOT be considered redundant with their host counterparts, per the guidance in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.3. To avoid accidental leakage, these candidates MUST have their raddr field set to 0.0.0.0 and their rport field set to 0.</p>
+<p id="rfc.section.3.1.p.10">Any candidates exposed to the web application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#processing" id="processing">ICE Candidate Processing</a>
 </h1>
@@ -511,7 +512,7 @@ ul.toc li {
 </h1>
 <p id="rfc.section.4.1.p.1">With typical ICE, endpoints on the same network will usually be able to establish a direct connection between their local IP addresses. When using the mDNS technique, a direct connection is still possible, but only if at least one side can properly resolve the provided mDNS candidates. This may not be possible in all scenarios.</p>
 <p id="rfc.section.4.1.p.2">First, some networks may entirely disable mDNS.  Second, mDNS queries have limited scope. On large networks, this may mean that an mDNS name cannot be resolved if the remote endpoint is too many segments away.</p>
-<p id="rfc.section.4.1.p.3">When mDNS fails, ICE will attempt to fall back to either NAT hairpin, if supported, or TURN relay, if not. As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, this may result in increased media latency and reduced connectivity/increased cost (depending on whether the application chooses to use TURN).</p>
+<p id="rfc.section.4.1.p.3">When mDNS fails, ICE will attempt to fall back to either NAT hairpin, if supported, or TURN relay if not. This may result in reduced connectivity, reduced throughput and increased latency, as well as increased cost in case of TURN relay.</p>
 <p id="rfc.section.4.1.p.4">One potential mitigation, as discussed in {#privacy}, is to not conceal candidates created from <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses. This permits connectivity even in large internal networks or where mDNS is disabled.</p>
 <p id="rfc.section.4.1.p.5">The exact impact of the mDNS technique is being researched experimentally and will be provided before publication of this document.</p>
 <h1 id="rfc.section.4.2">
