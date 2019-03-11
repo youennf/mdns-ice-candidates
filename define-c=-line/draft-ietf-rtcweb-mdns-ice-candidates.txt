@@ -72,7 +72,7 @@ Table of Contents
    3.  Principle . . . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.1.  ICE Candidate Gathering . . . . . . . . . . . . . . . . .   3
      3.2.  ICE Candidate Processing  . . . . . . . . . . . . . . . .   5
-   4.  Limitations . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   4.  Limitations . . . . . . . . . . . . . . . . . . . . . . . . .   6
      4.1.  Reduced Connectivity  . . . . . . . . . . . . . . . . . .   6
      4.2.  Connection Setup Latency  . . . . . . . . . . . . . . . .   6
      4.3.  Backward Compatibility  . . . . . . . . . . . . . . . . .   6
@@ -215,9 +215,9 @@ Internet-Draft             mdns-ice-candidates                March 2019
    IPv4 and IPv6 addresses MUST expose a different mDNS name for each
    address.
 
-   Any server-reflexive candidates generated from an mDNS local
-   candidate MUST have their raddr field set to 0.0.0.0 and their rport
-   field set to 0.
+   The mDNS name of an mDNS candidate MUST be used in its connection-
+   address field in the SDP.  When an mDNS candidate is the default
+   candidate, its mDNS name MUST be used in the connection-address field
 
 
 
@@ -226,16 +226,17 @@ Fablet, et al.         Expires September 12, 2019               [Page 4]
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
-   Any candidates exposed to the web application via local descriptions
-   MUST be identical to those provided during candidate gathering (i.e.,
-   MUST NOT contain private host IP addresses).
-
-   The mDNS name of an mDNS candidate MUST be used in its connection-
-   address field in the SDP.  When an mDNS candidate is the default
-   candidate, its mDNS name MUST be used in the connection-address field
    of the "c=" line in the SDP.  Since an mDNS candidate also conceals
    its address family, the corresponding "c=" line SHOULD use "IP4" in
    the address-type field.
+
+   Any server-reflexive candidates generated from an mDNS local
+   candidate MUST have their raddr field set to 0.0.0.0 and their rport
+   field set to 0.
+
+   Any candidates exposed to the web application via local descriptions
+   MUST be identical to those provided during candidate gathering (i.e.,
+   MUST NOT contain private host IP addresses).
 
 3.2.  ICE Candidate Processing
 
@@ -269,7 +270,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    candidates it will resolve using mDNS, as this mechanism allows
    attackers to send ICE traffic to devices with well-known mDNS names.
 
-4.  Limitations
 
 
 
@@ -281,6 +281,8 @@ Fablet, et al.         Expires September 12, 2019               [Page 5]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
+
+4.  Limitations
 
 4.1.  Reduced Connectivity
 
@@ -328,8 +330,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    significant issue for the mDNS technique.  When an endpoint that
    supports mDNS communicates with an endpoint that does not, the legacy
    endpoint will still provide its local IP addresses, and accordingly a
-   direct connection can still be attempted, even though the legacy
-   endpoint cannot resolve the mDNS names provided by the new endpoint.
 
 
 
@@ -338,6 +338,8 @@ Fablet, et al.         Expires September 12, 2019               [Page 6]
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
+   direct connection can still be attempted, even though the legacy
+   endpoint cannot resolve the mDNS names provided by the new endpoint.
    In the event the legacy endpoint attempts to resolve mDNS names using
    Unicast DNS, this may cause ICE to take somewhat longer to fully
    complete, but should not have any effect on connectivity or
@@ -384,8 +386,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    follows:
 
    ICE Agent 1:
-
-
 
 
 
