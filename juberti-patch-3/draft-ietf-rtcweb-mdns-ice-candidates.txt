@@ -5,10 +5,10 @@
 RTCWEB                                                         Y. Fablet
 Internet-Draft                                                Apple Inc.
 Intended status: Informational                               J. de Borst
-Expires: September 9, 2019                                     J. Uberti
+Expires: September 12, 2019                                    J. Uberti
                                                                  Q. Wang
                                                                   Google
-                                                          March 08, 2019
+                                                          March 11, 2019
 
 
   Using Multicast DNS to protect privacy when exposing ICE candidates
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 9, 2019.
+   This Internet-Draft will expire on September 12, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 1]
+Fablet, et al.         Expires September 12, 2019               [Page 1]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 2]
+Fablet, et al.         Expires September 12, 2019               [Page 2]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 3]
+Fablet, et al.         Expires September 12, 2019               [Page 3]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -217,19 +217,19 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    Note that any server-reflexive candidates generated from an mDNS host
    candidate will have IP addresses as their transport addresses, rather
+   than mDNS hostnames.  Because their transport addresses are different
 
 
 
-
-Fablet, et al.          Expires September 9, 2019               [Page 4]
+Fablet, et al.         Expires September 12, 2019               [Page 4]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
-   than mDNS hostnames.  Accordingly, they MUST NOT be considered
-   redundant as discussed in
-   [RFC8445].  To avoid accidental leakage, these candidates MUST have
-   their raddr field set to 0.0.0.0 and their rport field set to 0.
+   (i.e., not hostnames), they MUST NOT be considered redundant with
+   their host counterparts, per the guidance in [RFC8445],
+   Section 5.1.3.  To avoid accidental leakage, these candidates MUST
+   have their raddr field set to 0.0.0.0 and their rport field set to 0.
 
    Any candidates exposed to the web application via local descriptions
    MUST be identical to those provided during candidate gathering (i.e.,
@@ -277,7 +277,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 5]
+Fablet, et al.         Expires September 12, 2019               [Page 5]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -333,7 +333,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 6]
+Fablet, et al.         Expires September 12, 2019               [Page 6]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -389,7 +389,7 @@ a=candidate:1 1 udp 2122262783 1f4712db-ea17-4bcf-a596-105139dfd8bf.local
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 7]
+Fablet, et al.         Expires September 12, 2019               [Page 7]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -445,7 +445,7 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 8]
+Fablet, et al.         Expires September 12, 2019               [Page 8]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -501,7 +501,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 9]
+Fablet, et al.         Expires September 12, 2019               [Page 9]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -557,7 +557,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 10]
+Fablet, et al.         Expires September 12, 2019              [Page 10]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -613,7 +613,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 11]
+Fablet, et al.         Expires September 12, 2019              [Page 11]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -669,7 +669,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 12]
+Fablet, et al.         Expires September 12, 2019              [Page 12]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -725,7 +725,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 13]
+Fablet, et al.         Expires September 12, 2019              [Page 13]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -781,7 +781,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 14]
+Fablet, et al.         Expires September 12, 2019              [Page 14]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -837,7 +837,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 15]
+Fablet, et al.         Expires September 12, 2019              [Page 15]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -893,7 +893,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 16]
+Fablet, et al.         Expires September 12, 2019              [Page 16]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -949,7 +949,7 @@ Authors' Addresses
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 17]
+Fablet, et al.         Expires September 12, 2019              [Page 17]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -1005,4 +1005,4 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 18]
+Fablet, et al.         Expires September 12, 2019              [Page 18]
