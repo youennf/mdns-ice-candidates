@@ -5,10 +5,10 @@
 RTCWEB                                                         Y. Fablet
 Internet-Draft                                                Apple Inc.
 Intended status: Informational                               J. de Borst
-Expires: September 9, 2019                                     J. Uberti
+Expires: September 12, 2019                                    J. Uberti
                                                                  Q. Wang
                                                                   Google
-                                                          March 08, 2019
+                                                          March 11, 2019
 
 
   Using Multicast DNS to protect privacy when exposing ICE candidates
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 9, 2019.
+   This Internet-Draft will expire on September 12, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 1]
+Fablet, et al.         Expires September 12, 2019               [Page 1]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 2]
+Fablet, et al.         Expires September 12, 2019               [Page 2]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 3]
+Fablet, et al.         Expires September 12, 2019               [Page 3]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -221,7 +221,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 4]
+Fablet, et al.         Expires September 12, 2019               [Page 4]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -255,12 +255,8 @@ Internet-Draft             mdns-ice-candidates                March 2019
    ".local" name may happen through Unicast DNS as noted in [RFC6762],
    Section 3.
 
-   An ICE agent that supports mDNS candidates MUST support the situation
-   where the hostname resolution results in more than one IP address.
-   In this case, the ICE agent MUST take exactly one of the resolved IP
-   addresses and ignore the others.  The ICE agent SHOULD use the first
-   IPv6 address resolved, if one exists, or the first IPv4 address, if
-   not.
+   An ICE agent SHOULD ignore candidates where the hostname resolution
+   returns more than one IP address.
 
    An ICE agent MAY add additional restrictions regarding the ICE
    candidates it will resolve using mDNS, as this mechanism allows
@@ -273,20 +269,19 @@ Internet-Draft             mdns-ice-candidates                March 2019
    With typical ICE, endpoints on the same network will usually be able
    to establish a direct connection between their local IP addresses.
    When using the mDNS technique, a direct connection is still possible,
-
-
-
-
-Fablet, et al.          Expires September 9, 2019               [Page 5]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    but only if at least one side can properly resolve the provided mDNS
    candidates.  This may not be possible in all scenarios.
 
    First, some networks may entirely disable mDNS.  Second, mDNS queries
    have limited scope.  On large networks, this may mean that an mDNS
+
+
+
+Fablet, et al.         Expires September 12, 2019               [Page 5]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    name cannot be resolved if the remote endpoint is too many segments
    away.
 
@@ -330,19 +325,18 @@ Internet-Draft             mdns-ice-candidates                March 2019
    complete, but should not have any effect on connectivity or
    connection setup time.
 
-
-
-
-Fablet, et al.          Expires September 9, 2019               [Page 6]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    However, some legacy endpoints are not fully spec-compliant and can
    behave unpredictably in the presence of ICE candidates that contain a
    hostname, potentially leading to ICE failure.  Such endpoints have
    been identified during testing of this technique, but appear to be
    rare.
+
+
+
+Fablet, et al.         Expires September 12, 2019               [Page 6]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
 
 5.  Examples
 
@@ -385,17 +379,20 @@ a=candidate:1 1 udp 2122262783 1f4712db-ea17-4bcf-a596-105139dfd8bf.local
 
    ICE Agent 2:
 
+a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
+  61606 typ host
 
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 7]
+
+
+
+
+Fablet, et al.         Expires September 12, 2019               [Page 7]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
-
-a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
-  61606 typ host
 
 5.2.  Peer-reflexive Candidate From Slow Signaling
 
@@ -443,15 +440,16 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
    address.  They preregister their mDNS names to speed up ICE
    gathering.
 
+               ICE Agent 1                        ICE Agent 2
+               192.168.1.1         STUN           192.168.1.2
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 8]
+
+Fablet, et al.         Expires September 12, 2019               [Page 8]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
-               ICE Agent 1                        ICE Agent 2
-               192.168.1.1         STUN           192.168.1.2
                2001:db8::1        Server          2001:db8::2
   ----------------------------------------------------------------------
                       Pre-registration of mDNS names
@@ -498,16 +496,16 @@ Internet-Draft             mdns-ice-candidates                March 2019
                    |                |                 |
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     ICE Agent 2 sends server-reflexive candidates, resolution completes
+                   |                |                 |
+                   |                |<--Binding Req---| <192.168.1.2
 
 
 
-Fablet, et al.          Expires September 9, 2019               [Page 9]
+Fablet, et al.         Expires September 12, 2019               [Page 9]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
-                   |                |                 |
-                   |                |<--Binding Req---| <192.168.1.2
                    |                |---Binding Resp->|  is 192.0.2.2>
                    |<----- srflx Candidate C2.3 ------| <192.0.2.2>
                    |                |<--Binding Req---| <2001:db8::2
@@ -557,7 +555,9 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 10]
+
+
+Fablet, et al.         Expires September 12, 2019              [Page 10]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -613,7 +613,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 11]
+Fablet, et al.         Expires September 12, 2019              [Page 11]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -669,7 +669,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 12]
+Fablet, et al.         Expires September 12, 2019              [Page 12]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -725,7 +725,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 13]
+Fablet, et al.         Expires September 12, 2019              [Page 13]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -781,7 +781,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 14]
+Fablet, et al.         Expires September 12, 2019              [Page 14]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -837,7 +837,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 15]
+Fablet, et al.         Expires September 12, 2019              [Page 15]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -893,7 +893,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 16]
+Fablet, et al.         Expires September 12, 2019              [Page 16]
 
 Internet-Draft             mdns-ice-candidates                March 2019
 
@@ -949,4 +949,4 @@ Authors' Addresses
 
 
 
-Fablet, et al.          Expires September 9, 2019              [Page 17]
+Fablet, et al.         Expires September 12, 2019              [Page 17]
