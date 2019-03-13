@@ -283,10 +283,21 @@ ul.toc li {
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Terminology">
-<link href="#rfc.section.3" rel="Chapter" title="3 Principle">
+<link href="#rfc.section.3" rel="Chapter" title="3 Description">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 ICE Candidate Gathering">
+<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 Procedure">
+<link href="#rfc.section.3.1.2" rel="Chapter" title="3.1.2 Implementation Guidance">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 ICE Candidate Processing">
-<link href="#rfc.section.4" rel="Chapter" title="4 Limitations">
+<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Procedure">
+<link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 Implementation Guidance">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Additional Privacy Considerations">
+<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 Statistics">
+<link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 Interactions With TURN Servers">
+<link href="#rfc.section.3.3.3" rel="Chapter" title="3.3.3 Generated Name Reuse">
+<link href="#rfc.section.3.3.4" rel="Chapter" title="3.3.4 Specific Browsing Contexts">
+<link href="#rfc.section.3.3.5" rel="Chapter" title="3.3.5 Network Interface Enumeration">
+<link href="#rfc.section.3.3.6" rel="Chapter" title="3.3.6 Monitoring of Sessions">
+<link href="#rfc.section.4" rel="Chapter" title="4 Potential Limitations">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Reduced Connectivity">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Connection Setup Latency">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 Backward Compatibility">
@@ -295,23 +306,14 @@ ul.toc li {
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Peer-reflexive Candidate From Slow Signaling">
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 Peer-reflexive Candidate From Slow Resolution">
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 IPv4, IPv6, and STUN handling">
-<link href="#rfc.section.6" rel="Chapter" title="6 Privacy Considerations">
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Statistics">
-<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Interactions With TURN Servers">
-<link href="#rfc.section.6.3" rel="Chapter" title="6.3 Generated Names Reuse">
-<link href="#rfc.section.6.4" rel="Chapter" title="6.4 Determination of Address Privacy">
-<link href="#rfc.section.6.5" rel="Chapter" title="6.5 Special Handling for IPv6 Addresses">
-<link href="#rfc.section.6.6" rel="Chapter" title="6.6 Specific Browsing Contexts">
-<link href="#rfc.section.6.7" rel="Chapter" title="6.7 Network Interface Enumeration">
-<link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
-<link href="#rfc.section.7.1" rel="Chapter" title="7.1 mDNS Message Flooding">
-<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Malicious Responses to Deny Name Registration">
-<link href="#rfc.section.7.3" rel="Chapter" title="7.3 Monitoring of Sessions">
-<link href="#rfc.section.7.4" rel="Chapter" title="7.4 Unsolicited ICE Communications">
-<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations">
-<link href="#rfc.references" rel="Chapter" title="9 References">
-<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 mDNS Message Flooding">
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Malicious Responses to Deny Name Registration">
+<link href="#rfc.section.6.3" rel="Chapter" title="6.3 Unsolicited ICE Communications">
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
+<link href="#rfc.references" rel="Chapter" title="8 References">
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -387,13 +389,35 @@ ul.toc li {
 </li>
 <li>2.   <a href="#rfc.section.2">Terminology</a>
 </li>
-<li>3.   <a href="#rfc.section.3">Principle</a>
+<li>3.   <a href="#rfc.section.3">Description</a>
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">ICE Candidate Gathering</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">ICE Candidate Processing</a>
+<ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Procedure</a>
 </li>
-</ul><li>4.   <a href="#rfc.section.4">Limitations</a>
+<li>3.1.2.   <a href="#rfc.section.3.1.2">Implementation Guidance</a>
+</li>
+</ul><li>3.2.   <a href="#rfc.section.3.2">ICE Candidate Processing</a>
+</li>
+<ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Procedure</a>
+</li>
+<li>3.2.2.   <a href="#rfc.section.3.2.2">Implementation Guidance</a>
+</li>
+</ul><li>3.3.   <a href="#rfc.section.3.3">Additional Privacy Considerations</a>
+</li>
+<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Statistics</a>
+</li>
+<li>3.3.2.   <a href="#rfc.section.3.3.2">Interactions With TURN Servers</a>
+</li>
+<li>3.3.3.   <a href="#rfc.section.3.3.3">Generated Name Reuse</a>
+</li>
+<li>3.3.4.   <a href="#rfc.section.3.3.4">Specific Browsing Contexts</a>
+</li>
+<li>3.3.5.   <a href="#rfc.section.3.3.5">Network Interface Enumeration</a>
+</li>
+<li>3.3.6.   <a href="#rfc.section.3.3.6">Monitoring of Sessions</a>
+</li>
+</ul></ul><li>4.   <a href="#rfc.section.4">Potential Limitations</a>
 </li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">Reduced Connectivity</a>
 </li>
@@ -411,39 +435,21 @@ ul.toc li {
 </li>
 <li>5.4.   <a href="#rfc.section.5.4">IPv4, IPv6, and STUN handling</a>
 </li>
-</ul><li>6.   <a href="#rfc.section.6">Privacy Considerations</a>
+</ul><li>6.   <a href="#rfc.section.6">Security Considerations</a>
 </li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">Statistics</a>
+<ul><li>6.1.   <a href="#rfc.section.6.1">mDNS Message Flooding</a>
 </li>
-<li>6.2.   <a href="#rfc.section.6.2">Interactions With TURN Servers</a>
+<li>6.2.   <a href="#rfc.section.6.2">Malicious Responses to Deny Name Registration</a>
 </li>
-<li>6.3.   <a href="#rfc.section.6.3">Generated Names Reuse</a>
+<li>6.3.   <a href="#rfc.section.6.3">Unsolicited ICE Communications</a>
 </li>
-<li>6.4.   <a href="#rfc.section.6.4">Determination of Address Privacy</a>
+</ul><li>7.   <a href="#rfc.section.7">IANA Considerations</a>
 </li>
-<li>6.5.   <a href="#rfc.section.6.5">Special Handling for IPv6 Addresses</a>
+<li>8.   <a href="#rfc.references">References</a>
 </li>
-<li>6.6.   <a href="#rfc.section.6.6">Specific Browsing Contexts</a>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a>
 </li>
-<li>6.7.   <a href="#rfc.section.6.7">Network Interface Enumeration</a>
-</li>
-</ul><li>7.   <a href="#rfc.section.7">Security Considerations</a>
-</li>
-<ul><li>7.1.   <a href="#rfc.section.7.1">mDNS Message Flooding</a>
-</li>
-<li>7.2.   <a href="#rfc.section.7.2">Malicious Responses to Deny Name Registration</a>
-</li>
-<li>7.3.   <a href="#rfc.section.7.3">Monitoring of Sessions</a>
-</li>
-<li>7.4.   <a href="#rfc.section.7.4">Unsolicited ICE Communications</a>
-</li>
-</ul><li>8.   <a href="#rfc.section.8">IANA Considerations</a>
-</li>
-<li>9.   <a href="#rfc.references">References</a>
-</li>
-<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a>
-</li>
-<li>9.2.   <a href="#rfc.references.2">Informative References</a>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -462,14 +468,17 @@ ul.toc li {
 </h1>
 <p id="rfc.section.2.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
 <h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#principle" id="principle">Principle</a>
+<a href="#rfc.section.3">3.</a> <a href="#description" id="description">Description</a>
 </h1>
 <p id="rfc.section.3.p.1">This section uses the concept of ICE agent as defined in <a href="#RFC8445" class="xref">[RFC8445]</a>. In the remainder of the document, it is assumed that each browsing context (as defined in Section 7.1 of <a href="#HTMLSpec" class="xref">[HTMLSpec]</a>) has its own ICE agent.</p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#gathering" id="gathering">ICE Candidate Gathering</a>
 </h1>
 <p id="rfc.section.3.1.p.1">This section outlines how mDNS should be used by ICE agents to conceal local IP addresses.</p>
-<p id="rfc.section.3.1.p.2">For each host candidate gathered by an ICE agent as part of the gathering process described in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.1, the candidate is handled as described below.</p>
+<h1 id="rfc.section.3.1.1">
+<a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#procedure" id="procedure">Procedure</a>
+</h1>
+<p id="rfc.section.3.1.1.p.1">For each host candidate gathered by an ICE agent as part of the gathering process described in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.1, the candidate is handled as described below.</p>
 <p></p>
 
 <ol>
@@ -481,18 +490,36 @@ ul.toc li {
 <li>Store the mDNS hostname and its related IP address in the ICE agent for future reuse.</li>
 <li>Replace the IP address of the ICE candidate with its mDNS hostname and provide the candidate to the web application.</li>
 </ol>
-<p id="rfc.section.3.1.p.4">ICE agents can implement this procedure in any way as long as it produces equivalent results. An implementation may for instance pre-register mDNS hostnames by executing steps 3 to 6 and prepopulate an ICE agent accordingly.  By doing so, only step 7 of the above procedure will be executed at the time of gathering candidates.</p>
-<p id="rfc.section.3.1.p.5">ICE agents may also decide that certain local IP addresses are safe to expose. This may be because the ICE agent has a priori knowledge that the address is in fact public, or because the agent has made a policy decision to not conceal certain types of IP addresses (e.g., those with built-in privacy protections) as a calculated choice to improve connectivity. This topic is discussed further in {#privacy} below.</p>
-<p id="rfc.section.3.1.p.6">An implementation may also detect that mDNS is not supported by the available network interfaces. The ICE agent may skip steps 3 and 4 and directly decide to not expose the host candidate.</p>
-<p id="rfc.section.3.1.p.7">This procedure ensures that an mDNS name is used to replace only one IP address.  Specifically, an ICE agent using an interface with both IPv4 and IPv6 addresses MUST expose a different mDNS name for each address.</p>
-<p id="rfc.section.3.1.p.8">The mDNS name of an mDNS candidate MUST be used in the connection-address field of its candidate attribute. When an mDNS candidate is the default candidate, its mDNS name MUST be used in the connection-address field of the SDP &#8220;c=&#8221; line.  Since an mDNS candidate also conceals its address family, the &#8220;c=&#8221; line SHOULD use &#8220;IP4&#8221; in the address-type field.</p>
-<p id="rfc.section.3.1.p.9">Note that any server-reflexive candidates generated from an mDNS host candidate will have IP addresses as their transport addresses, rather than mDNS hostnames. Because their transport addresses are different (i.e., not hostnames), they MUST NOT be considered redundant with their host counterparts, per the guidance in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.3. To avoid accidental leakage, these candidates MUST have their raddr field set to 0.0.0.0 and their rport field set to 0.</p>
-<p id="rfc.section.3.1.p.10">Any candidates exposed to the web application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
+<p id="rfc.section.3.1.1.p.3">ICE agents can implement this procedure in any way as long as it produces equivalent results. An implementation may for instance pre-register mDNS hostnames by executing steps 3 to 6 and prepopulate an ICE agent accordingly.  By doing so, only step 7 of the above procedure will be executed at the time of gathering candidates.</p>
+<p id="rfc.section.3.1.1.p.4">An implementation may also detect that mDNS is not supported by the available network interfaces. The ICE agent may skip steps 3 and 4 and directly decide to not expose the host candidate.</p>
+<p id="rfc.section.3.1.1.p.5">This procedure ensures that an mDNS name is used to replace only one IP address.  Specifically, an ICE agent using an interface with both IPv4 and IPv6 addresses MUST expose a different mDNS name for each address.</p>
+<h1 id="rfc.section.3.1.2">
+<a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#implementation-guidance" id="implementation-guidance">Implementation Guidance</a>
+</h1>
+<h1 id="rfc.section.3.1.2.1">
+<a href="#rfc.section.3.1.2.1">3.1.2.1.</a> <a href="#determining-address-privacy-and-server-reflexive-candidates" id="determining-address-privacy-and-server-reflexive-candidates">Determining Address Privacy and Server-Reflexive Candidates</a>
+</h1>
+<p id="rfc.section.3.1.2.1.p.1">Naturally, an address that is already exposed to the Internet does not need to be protected by mDNS, as it can be trivially observed by the web server or remote endpoint. However, determining this ahead of time is not straightforward; while the fact that an IPv4 address is private can sometimes be inferred by its value, e.g., whether it is an <a href="#RFC1918" class="xref">[RFC1918]</a> address, the reverse is not necessarily true. IPv6 addresses present their own complications, e.g., private IPv6 addresses as a result of NAT64 <a href="#RFC6146" class="xref">[RFC6146]</a>.</p>
+<p id="rfc.section.3.1.2.1.p.2">Instead, the determination of whether an address is public can be reliably made as part of the ICE gathering process. For each mDNS host candidate generated according the guidance above, the usual STUN <a href="#RFC5389" class="xref">[RFC5389]</a> request is sent to a STUN server. This can be done for both IPv4 and IPv6 local addresses, provided that the application has configured both IPv4 and IPv6 STUN servers.  If the STUN response returns the same value as the local IP address, this indicates the address is in fact public.</p>
+<p id="rfc.section.3.1.2.1.p.3">Regardless of the result, a server-reflexive candidate will be generated; the transport address of this candidate is an IP address and therefore distinct from the hostname transport address of the associated mDNS candidate, and as such MUST NOT be considered redundant per the guidance in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.3. To avoid accidental IP address, this server-reflexive candidate MUST have its raddr field set to 0.0.0.0 and its rport field set to 0.</p>
+<p id="rfc.section.3.1.2.1.p.4">Once an address has been identified as public, the ICE agent MAY cache this information and omit mDNS protection for that address in future ICE gathering phases.</p>
+<h1 id="rfc.section.3.1.2.2">
+<a href="#rfc.section.3.1.2.2">3.1.2.2.</a> <a href="#special-handling-for-ipv6-addresses" id="special-handling-for-ipv6-addresses">Special Handling for IPv6 Addresses</a>
+</h1>
+<p id="rfc.section.3.1.2.2.p.1">As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, private IPv4 addresses are especially problematic because of their unbounded lifetime. However, the <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses recommended for WebRTC have inherent privacy protections, namely a short lifetime and the lack of any stateful information. Accordingly, implementations MAY choose to not conceal <a href="#RFC4941" class="xref">[RFC4941]</a> addresses with mDNS names as a tradeoff for improved peer-to-peer connectivity.</p>
+<h1 id="rfc.section.3.1.2.3">
+<a href="#rfc.section.3.1.2.3">3.1.2.3.</a> <a href="#mdns-candidate-encoding" id="mdns-candidate-encoding">mDNS Candidate Encoding</a>
+</h1>
+<p id="rfc.section.3.1.2.3.p.1">The mDNS name of an mDNS candidate MUST be used in the connection-address field of its candidate attribute. When an mDNS candidate is the default candidate, its mDNS name MUST be used in the connection-address field of the SDP &#8220;c=&#8221; line.  Since an mDNS candidate also conceals its address family, the &#8220;c=&#8221; line SHOULD use &#8220;IP4&#8221; in the address-type field.</p>
+<p id="rfc.section.3.1.2.3.p.2">Any candidates exposed to the application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#processing" id="processing">ICE Candidate Processing</a>
 </h1>
 <p id="rfc.section.3.2.p.1">This section outlines how received ICE candidates with mDNS names are processed by ICE agents, and is relevant to all endpoints.</p>
-<p id="rfc.section.3.2.p.2">For any remote ICE candidate received by the ICE agent, the following procedure is used:</p>
+<h1 id="rfc.section.3.2.1">
+<a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#procedure-1" id="procedure-1">Procedure</a>
+</h1>
+<p id="rfc.section.3.2.1.p.1">For any remote ICE candidate received by the ICE agent, the following procedure is used:</p>
 <p></p>
 
 <ol>
@@ -501,11 +528,50 @@ ul.toc li {
 <li>If it resolves to an IP address, replace the mDNS hostname of the ICE candidate with the resolved IP address and continue processing of the candidate as defined in <a href="#RFC8445" class="xref">[RFC8445]</a>.</li>
 <li>Otherwise, ignore the candidate.</li>
 </ol>
-<p id="rfc.section.3.2.p.4">An ICE agent may use a hostname resolver that transparently supports both Multicast and Unicast DNS. In this case the resolution of a &#8220;.local&#8221; name may happen through Unicast DNS as noted in <a href="#RFC6762" class="xref">[RFC6762]</a>, Section 3.</p>
-<p id="rfc.section.3.2.p.5">An ICE agent SHOULD ignore candidates where the hostname resolution returns more than one IP address.</p>
-<p id="rfc.section.3.2.p.6">An ICE agent MAY add additional restrictions regarding the ICE candidates it will resolve using mDNS, as this mechanism allows attackers to send ICE traffic to devices with well-known mDNS names.</p>
+<h1 id="rfc.section.3.2.2">
+<a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#implementation-guidance-1" id="implementation-guidance-1">Implementation Guidance</a>
+</h1>
+<p id="rfc.section.3.2.2.p.1">An ICE agent may use a hostname resolver that transparently supports both Multicast and Unicast DNS. In this case the resolution of a &#8220;.local&#8221; name may happen through Unicast DNS as noted in <a href="#RFC6762" class="xref">[RFC6762]</a>, Section 3.</p>
+<p id="rfc.section.3.2.2.p.2">An ICE agent SHOULD ignore candidates where the hostname resolution returns more than one IP address.</p>
+<p id="rfc.section.3.2.2.p.3">An ICE agent MAY add additional restrictions regarding the ICE candidates it will resolve using mDNS, as this mechanism allows attackers to send ICE traffic to devices with well-known mDNS names.</p>
+<h1 id="rfc.section.3.3">
+<a href="#rfc.section.3.3">3.3.</a> <a href="#privacy" id="privacy">Additional Privacy Considerations</a>
+</h1>
+<p id="rfc.section.3.3.p.1">The goal of this mechanism is to keep knowledge of private host IP addresses within the ICE agent while continuing to allow the application to transmit ICE candidates. Besides keeping private host IP addresses out of ICE candidates, implementations must take steps to prevent these IP addresses from being exposed to web applications through other means.</p>
+<h1 id="rfc.section.3.3.1">
+<a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#statistics" id="statistics">Statistics</a>
+</h1>
+<p id="rfc.section.3.3.1.p.1">Statistics related to ICE candidates that are accessible to the web application MUST NOT contain the IP address of a local or remote mDNS candidate; the mDNS name SHOULD be used instead.</p>
+<p id="rfc.section.3.3.1.p.2">In addition, a peer-reflexive remote candidate may be constructed from a remote host IP address as a result of an ICE connectivity check, as described in Section 7.3.1.3 of <a href="#RFC8445" class="xref">[RFC8445]</a>. This check may arrive before the candidate due to signaling or mDNS resolution delays, as shown in the examples above.</p>
+<p id="rfc.section.3.3.1.p.3">To prevent disclosure of the host IP address to the application in this scenario, statistics related to ICE candidates MUST NOT contain the IP address of any peer-reflexive candidate, unless that IP has already been learned through signaling of a candidate with the same address and either the same or a different port; this includes cases where the signaled candidate is discarded as redundant according to Section 5.1.3 of <a href="#RFC8445" class="xref">[RFC8445]</a>.</p>
+<h1 id="rfc.section.3.3.2">
+<a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#interactions-with-turn-servers" id="interactions-with-turn-servers">Interactions With TURN Servers</a>
+</h1>
+<p id="rfc.section.3.3.2.p.1">When sending data to a TURN <a href="#RFC5766" class="xref">[RFC5766]</a> server, the sending client tells the server the destination IP and port for the data. This means that if the client uses TURN to send to an IP that was obtained by mDNS resolution, the TURN server will learn the underlying host IP and port, and this information can then be relayed to the web application, defeating the value of the mDNS wrapping.</p>
+<p id="rfc.section.3.3.2.p.2">To prevent disclosure of the host IP address to a TURN server, the ICE agent MUST NOT form candidate pairs between its own relay candidates and remote mDNS candidates. Note that the converse is not an issue; the ICE agent MAY form candidate pairs between its own mDNS candidates and remote relay candidates, as in this situation host IPs will not be sent directly to the TURN server.</p>
+<p id="rfc.section.3.3.2.p.3">This restriction has no effect on connectivity; in the cases where host IP addresses are private and need to be wrapped with mDNS names, they will be unreachable from the TURN server, and as noted above, the reverse path will continue to work normally.</p>
+<h1 id="rfc.section.3.3.3">
+<a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#generated-name-reuse" id="generated-name-reuse">Generated Name Reuse</a>
+</h1>
+<p id="rfc.section.3.3.3.p.1">It is important that use of registered mDNS hostnames is limited in time and/or scope. Indefinitely reusing the same mDNS hostname candidate would provide applications an even more reliable tracking mechanism than the private IP addresses that this specification is designed to hide. In the case of a web application, the use of registered mDNS hostnames SHOULD be scoped by the web application origin, and SHOULD have the lifetime of the page executing the web application.</p>
+<h1 id="rfc.section.3.3.4">
+<a href="#rfc.section.3.3.4">3.3.4.</a> <a href="#specific-browsing-contexts" id="specific-browsing-contexts">Specific Browsing Contexts</a>
+</h1>
+<p id="rfc.section.3.3.4.p.1">As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, privacy may be breached if a web application running in two browsing contexts can determine whether it is running on the same device.  While the approach in this document prevents the application from directly comparing local private IP addresses, a successful local WebRTC connection can also present a threat to user privacy. Specifically, when the latency of a WebRTC connection latency is close to zero, the probability is high that the two peers are running on the same device.</p>
+<p id="rfc.section.3.3.4.p.2">To avoid this issue, browsers SHOULD NOT register mDNS names for WebRTC applications running in a third-party browsing context (i.e., a context that has a different origin than the top-level browsing context), or a private browsing context.</p>
+<h1 id="rfc.section.3.3.5">
+<a href="#rfc.section.3.3.5">3.3.5.</a> <a href="#network-interface-enumeration" id="network-interface-enumeration">Network Interface Enumeration</a>
+</h1>
+<p id="rfc.section.3.3.5.p.1">Even when local IP addresses are not exposed, the number of mDNS hostname candidates can still provide a fingerprinting dimension. This is in particular the case for network interfaces with limited connectivity that will not generate server-reflexive or relay candidates.</p>
+<p id="rfc.section.3.3.5.p.2">The more mDNS names an endpoint exposes through mDNS hostname candidates, the higher the fingerprinting risk. One countermeasure is to limit this number to a small value.</p>
+<p id="rfc.section.3.3.5.p.3">Note that no additional fingerprinting risk is introduced when restricting mDNS hostname candidates to default route only.</p>
+<h1 id="rfc.section.3.3.6">
+<a href="#rfc.section.3.3.6">3.3.6.</a> <a href="#monitoring-of-sessions" id="monitoring-of-sessions">Monitoring of Sessions</a>
+</h1>
+<p id="rfc.section.3.3.6.p.1">A malicious endpoint in the local network may also record other endpoints who are registering, unregistering, and resolving mDNS names. By doing so, they can create a session log that shows which endpoints are communicating, and for how long. If both endpoints in the session are on the same network, the fact they are communicating can be discovered.</p>
+<p id="rfc.section.3.3.6.p.2">Mitigation of this threat is beyond the scope of this proposal.</p>
 <h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#limitations" id="limitations">Limitations</a>
+<a href="#rfc.section.4">4.</a> <a href="#potential-limitations" id="potential-limitations">Potential Limitations</a>
 </h1>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#reduced-connectivity" id="reduced-connectivity">Reduced Connectivity</a>
@@ -513,12 +579,12 @@ ul.toc li {
 <p id="rfc.section.4.1.p.1">With typical ICE, endpoints on the same network will usually be able to establish a direct connection between their local IP addresses. When using the mDNS technique, a direct connection is still possible, but only if at least one side can properly resolve the provided mDNS candidates. This may not be possible in all scenarios.</p>
 <p id="rfc.section.4.1.p.2">First, some networks may entirely disable mDNS.  Second, mDNS queries have limited scope. On large networks, this may mean that an mDNS name cannot be resolved if the remote endpoint is too many segments away.</p>
 <p id="rfc.section.4.1.p.3">When mDNS fails, ICE will attempt to fall back to either NAT hairpin, if supported, or TURN relay if not. This may result in reduced connectivity, reduced throughput and increased latency, as well as increased cost in case of TURN relay.</p>
-<p id="rfc.section.4.1.p.4">One potential mitigation, as discussed in {#privacy}, is to not conceal candidates created from <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses. This permits connectivity even in large internal networks or where mDNS is disabled.</p>
+<p id="rfc.section.4.1.p.4">One potential mitigation, as discussed in <a href="#privacy" class="xref">Section 3.3</a>, is to not conceal candidates created from <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses. This permits connectivity even in large internal networks or where mDNS is disabled.</p>
 <p id="rfc.section.4.1.p.5">The exact impact of the mDNS technique is being researched experimentally and will be provided before publication of this document.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#connection-setup-latency" id="connection-setup-latency">Connection Setup Latency</a>
 </h1>
-<p id="rfc.section.4.2.p.1">As noted in <a href="#principle" class="xref">Section 3</a>, ICE agents using the mDNS technique are responsible for registering and resolving mDNS names as part of the ICE process. These steps may delay establishment of a direct peer-to-peer connection, compared to when raw local IP addresses are used.</p>
+<p id="rfc.section.4.2.p.1">As noted in <a href="#description" class="xref">Section 3</a>, ICE agents using the mDNS technique are responsible for registering and resolving mDNS names as part of the ICE process. These steps may delay establishment of a direct peer-to-peer connection, compared to when raw local IP addresses are used.</p>
 <p id="rfc.section.4.2.p.2">Given that these mDNS registrations and queries are typically occurring on a local network, any associated delays should be small. Also, as noted in <a href="#gathering" class="xref">Section 3.1</a>, pre-registration can be employed to eliminate gathering delays entirely.</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#backward-compatibility" id="backward-compatibility">Backward Compatibility</a>
@@ -699,53 +765,12 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
                   20006 typ srflx raddr 0.0.0.0 rport 0
 </pre>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#privacy" id="privacy">Privacy Considerations</a>
+<a href="#rfc.section.6">6.</a> <a href="#security" id="security">Security Considerations</a>
 </h1>
-<p id="rfc.section.6.p.1">The goal of this mechanism is to keep knowledge of private host IP addresses within the ICE agent while continuing to allow the application to transmit ICE candidates. Besides keeping private host IP addresses out of ICE candidates, implementations must take steps to prevent these IP addresses from being exposed to web applications through other means.</p>
 <h1 id="rfc.section.6.1">
-<a href="#rfc.section.6.1">6.1.</a> <a href="#statistics" id="statistics">Statistics</a>
+<a href="#rfc.section.6.1">6.1.</a> <a href="#mdns-message-flooding" id="mdns-message-flooding">mDNS Message Flooding</a>
 </h1>
-<p id="rfc.section.6.1.p.1">Statistics related to ICE candidates that are accessible to the web application MUST NOT contain the IP address of a local or remote mDNS candidate; the mDNS name SHOULD be used instead.</p>
-<p id="rfc.section.6.1.p.2">In addition, a peer-reflexive remote candidate may be constructed from a remote host IP address as a result of an ICE connectivity check, as described in Section 7.3.1.3 of <a href="#RFC8445" class="xref">[RFC8445]</a>. This check may arrive before the candidate due to signaling or mDNS resolution delays, as shown in the examples above.</p>
-<p id="rfc.section.6.1.p.3">To prevent disclosure of the host IP address to the application in this scenario, statistics related to ICE candidates MUST NOT contain the IP address of any peer-reflexive candidate, unless that IP has already been learned through signaling of a candidate with the same address and either the same or a different port; this includes cases where the signaled candidate is discarded as redundant according to Section 5.1.3 of <a href="#RFC8445" class="xref">[RFC8445]</a>.</p>
-<h1 id="rfc.section.6.2">
-<a href="#rfc.section.6.2">6.2.</a> <a href="#interactions-with-turn-servers" id="interactions-with-turn-servers">Interactions With TURN Servers</a>
-</h1>
-<p id="rfc.section.6.2.p.1">When sending data to a TURN <a href="#RFC5766" class="xref">[RFC5766]</a> server, the sending client tells the server the destination IP and port for the data. This means that if the client uses TURN to send to an IP that was obtained by mDNS resolution, the TURN server will learn the underlying host IP and port, and this information can then be relayed to the web application, defeating the value of the mDNS wrapping.</p>
-<p id="rfc.section.6.2.p.2">To prevent disclosure of the host IP address to a TURN server, the ICE agent MUST NOT form candidate pairs between its own relay candidates and remote mDNS candidates. Note that the converse is not an issue; the ICE agent MAY form candidate pairs between its own mDNS candidates and remote relay candidates, as in this situation host IPs will not be sent directly to the TURN server.</p>
-<p id="rfc.section.6.2.p.3">This restriction has no effect on connectivity; in the cases where host IP addresses are private and need to be wrapped with mDNS names, they will be unreachable from the TURN server, and as noted above, the reverse path will continue to work normally.</p>
-<h1 id="rfc.section.6.3">
-<a href="#rfc.section.6.3">6.3.</a> <a href="#generated-names-reuse" id="generated-names-reuse">Generated Names Reuse</a>
-</h1>
-<p id="rfc.section.6.3.p.1">It is important that use of registered mDNS hostnames is limited in time and/or scope. Indefinitely reusing the same mDNS hostname candidate would provide applications an even more reliable tracking mechanism than the private IP addresses that this specification is designed to hide. In the case of a web application, the use of registered mDNS hostnames SHOULD be scoped by the web application origin, and SHOULD have the lifetime of the page executing the web application.</p>
-<h1 id="rfc.section.6.4">
-<a href="#rfc.section.6.4">6.4.</a> <a href="#determination-of-address-privacy" id="determination-of-address-privacy">Determination of Address Privacy</a>
-</h1>
-<p id="rfc.section.6.4.p.1">Naturally, an address that is already exposed to the Internet does not need to be protected by mDNS, as it can be trivially observed by the web server or remote endpoint. However, determining this ahead of time is not straightforward; while the fact that an IPv4 address is private can sometimes be inferred by its value, e.g., whether it is an <a href="#RFC1918" class="xref">[RFC1918]</a> address, the reverse is not necessarily true. IPv6 addresses present their own complications, e.g., private IPv6 addresses as a result of NAT64 <a href="#RFC6146" class="xref">[RFC6146]</a>.</p>
-<p id="rfc.section.6.4.p.2">Instead, the determination of whether an address is public can be reliably made as part of the ICE gathering process, namely, if the query to the STUN <a href="#RFC5389" class="xref">[RFC5389]</a> server returns the same value as the local address. This can be done for both IPv4 and IPv6 local addresses, provided that the application has configured both IPv4 and IPv6 STUN servers. If this situation occurs, i.e., STUN returns the same IP address value for an address that has already been communicated as an mDNS candidate during the current ICE gathering phase, the ICE agent MUST NOT eliminate the candidate as redundant and MUST send the IP address as a server-reflexive candidate. This allows the ICE agent to send mDNS candidates immediately (i.e., without waiting for STUN), even if the associated addresses may not be private.</p>
-<p id="rfc.section.6.4.p.3">Once an address has been identified as public, the ICE agent MAY cache this information and omit mDNS protection for that address in future ICE gathering phases.</p>
-<h1 id="rfc.section.6.5">
-<a href="#rfc.section.6.5">6.5.</a> <a href="#special-handling-for-ipv6-addresses" id="special-handling-for-ipv6-addresses">Special Handling for IPv6 Addresses</a>
-</h1>
-<p id="rfc.section.6.5.p.1">As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, private IPv4 addresses are especially problematic because of their unbounded lifetime. However, the <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses recommended for WebRTC have inherent privacy protections, namely a short lifetime and the lack of any stateful information. Accordingly, implementations MAY choose to not conceal <a href="#RFC4941" class="xref">[RFC4941]</a> addresses with mDNS names as a tradeoff for improved peer-to-peer connectivity.</p>
-<h1 id="rfc.section.6.6">
-<a href="#rfc.section.6.6">6.6.</a> <a href="#specific-browsing-contexts" id="specific-browsing-contexts">Specific Browsing Contexts</a>
-</h1>
-<p id="rfc.section.6.6.p.1">As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, privacy may be breached if a web application running in two browsing contexts can determine whether it is running on the same device.  While the approach in this document prevents the application from directly comparing local private IP addresses, a successful local WebRTC connection can also present a threat to user privacy. Specifically, when the latency of a WebRTC connection latency is close to zero, the probability is high that the two peers are running on the same device.</p>
-<p id="rfc.section.6.6.p.2">To avoid this issue, browsers SHOULD NOT register mDNS names for WebRTC applications running in a third-party browsing context (i.e., a context that has a different origin than the top-level browsing context), or a private browsing context.</p>
-<h1 id="rfc.section.6.7">
-<a href="#rfc.section.6.7">6.7.</a> <a href="#network-interface-enumeration" id="network-interface-enumeration">Network Interface Enumeration</a>
-</h1>
-<p id="rfc.section.6.7.p.1">Even when local IP addresses are not exposed, the number of mDNS hostname candidates can still provide a fingerprinting dimension. This is in particular the case for network interfaces with limited connectivity that will not generate server-reflexive or relay candidates.</p>
-<p id="rfc.section.6.7.p.2">The more mDNS names an endpoint exposes through mDNS hostname candidates, the higher the fingerprinting risk. One countermeasure is to limit this number to a small value.</p>
-<p id="rfc.section.6.7.p.3">Note that no additional fingerprinting risk is introduced when restricting mDNS hostname candidates to default route only.</p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#security" id="security">Security Considerations</a>
-</h1>
-<h1 id="rfc.section.7.1">
-<a href="#rfc.section.7.1">7.1.</a> <a href="#mdns-message-flooding" id="mdns-message-flooding">mDNS Message Flooding</a>
-</h1>
-<p id="rfc.section.7.1.p.1">The implementation of this proposal requires the mDNS querying capability of the browser for registering mDNS names or adding remote ICE host candidates with such names. It also requires the mDNS responding capability of either the browser or the operating platform of the browser for registering, removing or resolving mDNS names. In particular,</p>
+<p id="rfc.section.6.1.p.1">The implementation of this proposal requires the mDNS querying capability of the browser for registering mDNS names or adding remote ICE host candidates with such names. It also requires the mDNS responding capability of either the browser or the operating platform of the browser for registering, removing or resolving mDNS names. In particular,</p>
 <p></p>
 
 <ul>
@@ -753,7 +778,7 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 <li>the addition of remote ICE host candidates with mDNS names generates mDNS queries for names of each candidate;</li>
 <li>the removal of names could happen when the browsing context of the ICE agent is destroyed in an implementation, and goodbye responses should be sent to invalidate records generated by the ICE agent in the local network (<a href="#RFC6762" class="xref">[RFC6762]</a>, Section 10.1).</li>
 </ul>
-<p id="rfc.section.7.1.p.3">A malicious Web application could flood the local network with mDNS messages by:</p>
+<p id="rfc.section.6.1.p.3">A malicious Web application could flood the local network with mDNS messages by:</p>
 <p></p>
 
 <ul>
@@ -761,31 +786,26 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 <li>destroying these local candidates soon after the name registration is done;</li>
 <li>adding fictitious remote ICE host candidates with mDNS names.</li>
 </ul>
-<p><a href="#RFC6762" class="xref">[RFC6762]</a> defines a general per-question and per-record multicast rate limiting rule, in which a given question or record on a given interface cannot be sent less than one second since its last transmission. This rate limiting rule however does not mitigate the above attacks, in which new names, hence new questions or records, are constantly created and sent. Therefore, a browser-wide mDNS message rate limit MUST be provided for all mDNS queries and responses that are dispatched during the ICE candidate gathering and processing described in <a href="#principle" class="xref">Section 3</a>. A browser MAY implement more specific rate limits, e.g., to ensure a single origin does not prevent other origins from registering, unregistering, or resolving mDNS names.</p>
-<h1 id="rfc.section.7.2">
-<a href="#rfc.section.7.2">7.2.</a> <a href="#malicious-responses-to-deny-name-registration" id="malicious-responses-to-deny-name-registration">Malicious Responses to Deny Name Registration</a>
+<p><a href="#RFC6762" class="xref">[RFC6762]</a> defines a general per-question and per-record multicast rate limiting rule, in which a given question or record on a given interface cannot be sent less than one second since its last transmission. This rate limiting rule however does not mitigate the above attacks, in which new names, hence new questions or records, are constantly created and sent. Therefore, a browser-wide mDNS message rate limit MUST be provided for all mDNS queries and responses that are dispatched during the ICE candidate gathering and processing described in <a href="#description" class="xref">Section 3</a>. A browser MAY implement more specific rate limits, e.g., to ensure a single origin does not prevent other origins from registering, unregistering, or resolving mDNS names.</p>
+<h1 id="rfc.section.6.2">
+<a href="#rfc.section.6.2">6.2.</a> <a href="#malicious-responses-to-deny-name-registration" id="malicious-responses-to-deny-name-registration">Malicious Responses to Deny Name Registration</a>
 </h1>
-<p id="rfc.section.7.2.p.1">If the optional probing queries are implemented for the name registration, a malicious endpoint in the local network, which is capable of responding mDNS queries, could send responses to block the use of the generated names. This would lead to the discarding of this ICE host candidate as in Step 5 in <a href="#gathering" class="xref">Section 3.1</a>.</p>
-<p id="rfc.section.7.2.p.2">The above attack can be mitigated by skipping the probing when registering a name, which also conforms to Section 8 in <a href="#RFC6762" class="xref">[RFC6762]</a>, given that the name is randomly generated for the probabilistic uniqueness (e.g. a version 4 UUID) in Step 3 in <a href="#gathering" class="xref">Section 3.1</a>. However, a similar attack can be performed by exploiting the negative responses (defined in <a href="#RFC6762" class="xref">[RFC6762]</a>, Section 8.1), in which NSEC resource records are sent to claim the nonexistence of records related to the gathered ICE host candidates.</p>
-<p id="rfc.section.7.2.p.3">The existence of malicious endpoints in the local network poses a generic threat, and requires dedicated protocol suites to mitigate, which is beyond the scope of this proposal.</p>
-<h1 id="rfc.section.7.3">
-<a href="#rfc.section.7.3">7.3.</a> <a href="#monitoring-of-sessions" id="monitoring-of-sessions">Monitoring of Sessions</a>
+<p id="rfc.section.6.2.p.1">If the optional probing queries are implemented for the name registration, a malicious endpoint in the local network, which is capable of responding mDNS queries, could send responses to block the use of the generated names. This would lead to the discarding of this ICE host candidate as in Step 5 in <a href="#gathering" class="xref">Section 3.1</a>.</p>
+<p id="rfc.section.6.2.p.2">The above attack can be mitigated by skipping the probing when registering a name, which also conforms to Section 8 in <a href="#RFC6762" class="xref">[RFC6762]</a>, given that the name is randomly generated for the probabilistic uniqueness (e.g. a version 4 UUID) in Step 3 in <a href="#gathering" class="xref">Section 3.1</a>. However, a similar attack can be performed by exploiting the negative responses (defined in <a href="#RFC6762" class="xref">[RFC6762]</a>, Section 8.1), in which NSEC resource records are sent to claim the nonexistence of records related to the gathered ICE host candidates.</p>
+<p id="rfc.section.6.2.p.3">The existence of malicious endpoints in the local network poses a generic threat, and requires dedicated protocol suites to mitigate, which is beyond the scope of this proposal.</p>
+<h1 id="rfc.section.6.3">
+<a href="#rfc.section.6.3">6.3.</a> <a href="#unsolicited-ice-communications" id="unsolicited-ice-communications">Unsolicited ICE Communications</a>
 </h1>
-<p id="rfc.section.7.3.p.1">A malicious endpoint in the local network may also record other endpoints who are registering, unregistering, and resolving mDNS names. By doing so, they can create a session log that shows which endpoints are communicating, and for how long. If both endpoints in the session are on the same network, the fact they are communicating can be discovered.</p>
-<p id="rfc.section.7.3.p.2">As above, mitigation of this threat is beyond the scope of this proposal.</p>
-<h1 id="rfc.section.7.4">
-<a href="#rfc.section.7.4">7.4.</a> <a href="#unsolicited-ice-communications" id="unsolicited-ice-communications">Unsolicited ICE Communications</a>
+<p id="rfc.section.6.3.p.1">As noted in Section 4.2 of <a href="#RTCWebSecurity" class="xref">[RTCWebSecurity]</a>, an attacker may use ICE as a way to send unsolicited network traffic to specific endpoints. While this is not specific to mDNS hostname candidates, this technique makes it easier to target devices with well-known mDNS names.</p>
+<p id="rfc.section.6.3.p.2">As noted in <a href="#processing" class="xref">Section 3.2</a>, ICE agents may decide to not resolve mDNS names, for example, if these names are not in the format defined by <a href="#gathering" class="xref">Section 3.1</a>.</p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
-<p id="rfc.section.7.4.p.1">As noted in Section 4.2 of <a href="#RTCWebSecurity" class="xref">[RTCWebSecurity]</a>, an attacker may use ICE as a way to send unsolicited network traffic to specific endpoints. While this is not specific to mDNS hostname candidates, this technique makes it easier to target devices with well-known mDNS names.</p>
-<p id="rfc.section.7.4.p.2">As noted in <a href="#processing" class="xref">Section 3.2</a>, ICE agents may decide to not resolve mDNS names, for example, if these names are not in the format defined by <a href="#gathering" class="xref">Section 3.1</a>.</p>
-<h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
-</h1>
-<p id="rfc.section.8.p.1">This document requires no actions from IANA.</p>
+<p id="rfc.section.7.p.1">This document requires no actions from IANA.</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">9.</a> References</h1>
+<a href="#rfc.references">8.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">9.1.</a> Normative References</h1>
+<a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -824,7 +844,7 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">9.2.</a> Informative References</h1>
+<a href="#rfc.references.2">8.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="HTMLSpec">[HTMLSpec]</b></td>
