@@ -228,7 +228,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 3.1.2.  Implementation Guidance
 
-3.1.2.1.  mDNS registration and query answer
+3.1.2.1.  Registration and Responses
 
    If the ICE agent skips both probing and announcement sending, the ICE
    agent does not send any mDNS message on the network.  In that case,
@@ -248,7 +248,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    When processing an mDNS query message that matches a registered mDNS
    name and the mDNS query message has its response-unicast bit set, the
-   ICE agent SHOULD answer through unicast but SHOULD NOT send an mDNS
+   ICE agent SHOULD answer through unicast and SHOULD NOT send an mDNS
    announcement for the mDNS name.  This will limit the multicast
    traffic as the announcement is probably not useful to any other node
    of the network.
@@ -349,8 +349,8 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    2.  Otherwise, resolve the candidate using mDNS.  The ICE agent
        SHOULD set the unicast-response bit of the corresponding mDNS
-       query message.  This allows minimizing multicast traffic as the
-       response is probably only useful to the querying node.
+       query message.  This minimizes multicast traffic, as the response
+       is probably only useful to the querying node.
 
    3.  If it resolves to an IP address, replace the mDNS hostname of the
        ICE candidate with the resolved IP address and continue
