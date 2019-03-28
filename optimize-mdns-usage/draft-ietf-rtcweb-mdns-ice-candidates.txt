@@ -72,33 +72,33 @@ Table of Contents
    3.  Description . . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.1.  ICE Candidate Gathering . . . . . . . . . . . . . . . . .   3
        3.1.1.  Procedure . . . . . . . . . . . . . . . . . . . . . .   4
-       3.1.2.  Implementation Guidance . . . . . . . . . . . . . . .   4
+       3.1.2.  Implementation Guidance . . . . . . . . . . . . . . .   5
      3.2.  ICE Candidate Processing  . . . . . . . . . . . . . . . .   6
-       3.2.1.  Procedure . . . . . . . . . . . . . . . . . . . . . .   6
+       3.2.1.  Procedure . . . . . . . . . . . . . . . . . . . . . .   7
        3.2.2.  Implementation Guidance . . . . . . . . . . . . . . .   7
      3.3.  Additional Privacy Considerations . . . . . . . . . . . .   7
        3.3.1.  Statistics  . . . . . . . . . . . . . . . . . . . . .   7
        3.3.2.  Interactions With TURN Servers  . . . . . . . . . . .   8
        3.3.3.  Generated Name Reuse  . . . . . . . . . . . . . . . .   8
-       3.3.4.  Specific Browsing Contexts  . . . . . . . . . . . . .   8
+       3.3.4.  Specific Browsing Contexts  . . . . . . . . . . . . .   9
        3.3.5.  Network Interface Enumeration . . . . . . . . . . . .   9
        3.3.6.  Monitoring of Sessions  . . . . . . . . . . . . . . .   9
    4.  Potential Limitations . . . . . . . . . . . . . . . . . . . .   9
-     4.1.  Reduced Connectivity  . . . . . . . . . . . . . . . . . .   9
+     4.1.  Reduced Connectivity  . . . . . . . . . . . . . . . . . .  10
      4.2.  Connection Setup Latency  . . . . . . . . . . . . . . . .  10
      4.3.  Backward Compatibility  . . . . . . . . . . . . . . . . .  10
-   5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
+   5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
      5.1.  Normal Handling . . . . . . . . . . . . . . . . . . . . .  11
-     5.2.  Peer-reflexive Candidate From Slow Signaling  . . . . . .  11
+     5.2.  Peer-reflexive Candidate From Slow Signaling  . . . . . .  12
      5.3.  Peer-reflexive Candidate From Slow Resolution . . . . . .  12
-     5.4.  IPv4, IPv6, and STUN handling . . . . . . . . . . . . . .  12
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-     6.1.  mDNS Message Flooding . . . . . . . . . . . . . . . . . .  14
-     6.2.  Malicious Responses to Deny Name Registration . . . . . .  15
+     5.4.  IPv4, IPv6, and STUN handling . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+     6.1.  mDNS Message Flooding . . . . . . . . . . . . . . . . . .  15
+     6.2.  Malicious Responses to Deny Name Registration . . . . . .  16
      6.3.  Unsolicited ICE Communications  . . . . . . . . . . . . .  16
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  17
      8.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
@@ -188,6 +188,9 @@ Internet-Draft             mdns-ice-candidates                March 2019
        a version 4 UUID as defined in [RFC4122], followed by ".local".
 
    4.  Register the candidate's mDNS hostname as defined in [RFC6762].
+       As the hostname is expected to be unique, the ICE agent SHOULD
+       skip probing when registering the hostname.  The ICE agent MAY
+       also skip sending an mDNS announcement for the hostname.
 
    5.  If registering of the mDNS hostname fails, abort these steps.
        The candidate is not exposed.
@@ -213,9 +216,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    IPv4 and IPv6 addresses MUST expose a different mDNS name for each
    address.
 
-3.1.2.  Implementation Guidance
-
-
 
 
 
@@ -226,7 +226,39 @@ Fablet, et al.         Expires September 29, 2019               [Page 4]
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
-3.1.2.1.  Determining Address Privacy and Server-Reflexive Candidates
+3.1.2.  Implementation Guidance
+
+3.1.2.1.  mDNS registration and query answer
+
+   If the ICE agent skips both probing and announcement sending, the ICE
+   agent does not send any mDNS message on the network.  In that case,
+   the ICE agent is expected to answer to any query matching the
+   registered name.
+
+   Sending an mDNS announcement will usually allow the ICE agent
+   receiving the remote ICE candidate containing the mDNS name to
+   already have the information useful to resolve the mDNS name if the
+   mDNS ICE candidate can actually be used.  If the mDNS announcement is
+   not sent, this can increase the connection setup time.
+
+   Sending the mDNS announcement to the network can be delayed, for
+   instance due to rate limits.  An ICE agent can provide the candidate
+   to the web application before the mDNS announcement is sent on the
+   network.
+
+   When processing an mDNS query message that matches a registered mDNS
+   name and the mDNS query message has its response-unicast bit set, the
+   ICE agent SHOULD answer through unicast but SHOULD NOT send an mDNS
+   announcement for the mDNS name.  This will limit the multicast
+   traffic as the announcement is probably not useful to any other node
+   of the network.
+
+   TODO: Verify the 'SHOULD NOT' rule interaction with RFC 6762 section
+   7.3 [1].  Do we need to state that a query should always be sent? or
+   sent even if a previous request was sent with the unicast response
+   bit set?
+
+3.1.2.2.  Determining Address Privacy and Server-Reflexive Candidates
 
    Naturally, an address that is already exposed to the Internet does
    not need to be protected by mDNS, as it can be trivially observed by
@@ -242,6 +274,14 @@ Internet-Draft             mdns-ice-candidates                March 2019
    host candidate generated according the guidance above, the usual STUN
    [RFC5389] request is sent to a STUN server.  This can be done for
    both IPv4 and IPv6 local addresses, provided that the application has
+
+
+
+Fablet, et al.         Expires September 29, 2019               [Page 5]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    configured both IPv4 and IPv6 STUN servers.  If the STUN response
    returns the same value as the local IP address, this indicates the
    address is in fact public.
@@ -258,7 +298,7 @@ Internet-Draft             mdns-ice-candidates                March 2019
    cache this information and omit mDNS protection for that address in
    future ICE gathering phases.
 
-3.1.2.2.  Special Handling for IPv6 Addresses
+3.1.2.3.  Special Handling for IPv6 Addresses
 
    As noted in [IPHandling], private IPv4 addresses are especially
    problematic because of their unbounded lifetime.  However, the
@@ -268,20 +308,12 @@ Internet-Draft             mdns-ice-candidates                March 2019
    [RFC4941] addresses with mDNS names as a tradeoff for improved peer-
    to-peer connectivity.
 
-3.1.2.3.  mDNS Candidate Encoding
+3.1.2.4.  mDNS Candidate Encoding
 
    The mDNS name of an mDNS candidate MUST be used in the connection-
    address field of its candidate attribute.  When an mDNS candidate is
    the default candidate, its mDNS name MUST be used in the connection-
    address field of the SDP "c=" line.  Since an mDNS candidate also
-
-
-
-Fablet, et al.         Expires September 29, 2019               [Page 5]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    conceals its address family, the "c=" line SHOULD use "IP4" in the
    address-type field.
 
@@ -289,45 +321,13 @@ Internet-Draft             mdns-ice-candidates                March 2019
    be identical to those provided during candidate gathering (i.e., MUST
    NOT contain private host IP addresses).
 
-3.1.2.4.  mDNS registration and query answer
-
-   As the mNDS name of any mDNS candidate is expected to be unique, the
-   ICE agent SHOULD skip probing when registering the mDNS name.  The
-   ICE agent MAY skip sending a mDNS announcement for the mDNS name.
-
-   If the ICE agent skips probing and announcement sending, the ICE
-   agent does not send any mDNS message on the network.  The ICE agent
-   SHOULD answer to any query matching the registered name.
-
-   When processing a mDNS query message that matches a registered mDNS
-   name and the mDNS query message has its response-unicast bit set, the
-   ICE agent SHOULD answer through unicast but SHOULD NOT send a mDNS
-   announcement for the mDNS name.
-
-   TODO: Verify the 'SHOULD NOT' rule interaction with RFC 6762 section
-   7.3 [1].  Do we need to state that a query should always be sent?
-
 3.2.  ICE Candidate Processing
 
    This section outlines how received ICE candidates with mDNS names are
    processed by ICE agents, and is relevant to all endpoints.
 
-3.2.1.  Procedure
 
-   For any remote ICE candidate received by the ICE agent, the following
-   procedure is used:
 
-   1.  If the connection-address field value of the ICE candidate does
-       not end with ".local" or if the value contains more than one ".",
-       then process the candidate as defined in [RFC8445].
-
-   2.  Otherwise, resolve the candidate using mDNS.
-
-   3.  If it resolves to an IP address, replace the mDNS hostname of the
-       ICE candidate with the resolved IP address and continue
-       processing of the candidate as defined in [RFC8445].
-
-   4.  Otherwise, ignore the candidate.
 
 
 
@@ -338,6 +338,26 @@ Fablet, et al.         Expires September 29, 2019               [Page 6]
 Internet-Draft             mdns-ice-candidates                March 2019
 
 
+3.2.1.  Procedure
+
+   For any remote ICE candidate received by the ICE agent, the following
+   procedure is used:
+
+   1.  If the connection-address field value of the ICE candidate does
+       not end with ".local" or if the value contains more than one ".",
+       then process the candidate as defined in [RFC8445].
+
+   2.  Otherwise, resolve the candidate using mDNS.  The ICE agent
+       SHOULD set the unicast-response bit of the corresponding mDNS
+       query message.  This allows minimizing multicast traffic as the
+       response is probably only useful to the querying node.
+
+   3.  If it resolves to an IP address, replace the mDNS hostname of the
+       ICE candidate with the resolved IP address and continue
+       processing of the candidate as defined in [RFC8445].
+
+   4.  Otherwise, ignore the candidate.
+
 3.2.2.  Implementation Guidance
 
    An ICE agent may use a hostname resolver that transparently supports
@@ -347,9 +367,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    An ICE agent SHOULD ignore candidates where the hostname resolution
    returns more than one IP address.
-
-   When resolving a mDNS name, the ICE agent SHOULD set the unicast-
-   response bit of the corresponding mDNS query message.
 
    An ICE agent MAY add additional restrictions regarding the ICE
    candidates it will resolve using mDNS, as this mechanism allows
@@ -370,6 +387,13 @@ Internet-Draft             mdns-ice-candidates                March 2019
    application MUST NOT contain the IP address of a local or remote mDNS
    candidate; the mDNS name SHOULD be used instead.
 
+
+
+Fablet, et al.         Expires September 29, 2019               [Page 7]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    In addition, a peer-reflexive remote candidate may be constructed
    from a remote host IP address as a result of an ICE connectivity
    check, as described in Section 7.3.1.3 of [RFC8445].  This check may
@@ -383,16 +407,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    address and either the same or a different port; this includes cases
    where the signaled candidate is discarded as redundant according to
    Section 5.1.3 of [RFC8445].
-
-
-
-
-
-
-Fablet, et al.         Expires September 29, 2019               [Page 7]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
 3.3.2.  Interactions With TURN Servers
 
@@ -426,6 +440,16 @@ Internet-Draft             mdns-ice-candidates                March 2019
    origin, and SHOULD have the lifetime of the page executing the web
    application.
 
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019               [Page 8]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
 3.3.4.  Specific Browsing Contexts
 
    As noted in [IPHandling], privacy may be breached if a web
@@ -441,14 +465,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    WebRTC applications running in a third-party browsing context (i.e.,
    a context that has a different origin than the top-level browsing
    context), or a private browsing context.
-
-
-
-
-Fablet, et al.         Expires September 29, 2019               [Page 8]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
 3.3.5.  Network Interface Enumeration
 
@@ -478,6 +494,18 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
 4.  Potential Limitations
 
+
+
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019               [Page 9]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
 4.1.  Reduced Connectivity
 
    With typical ICE, endpoints on the same network will usually be able
@@ -498,14 +526,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    One potential mitigation, as discussed in Section 3.3, is to not
    conceal candidates created from [RFC4941] IPv6 addresses.  This
-
-
-
-Fablet, et al.         Expires September 29, 2019               [Page 9]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    permits connectivity even in large internal networks or where mDNS is
    disabled.
 
@@ -534,6 +554,14 @@ Internet-Draft             mdns-ice-candidates                March 2019
    direct connection can still be attempted, even though the legacy
    endpoint cannot resolve the mDNS names provided by the new endpoint.
    In the event the legacy endpoint attempts to resolve mDNS names using
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 10]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    Unicast DNS, this may cause ICE to take somewhat longer to fully
    complete, but should not have any effect on connectivity or
    connection setup time.
@@ -551,16 +579,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    examples demonstrate how peer-reflexive candidates for local IP
    addresses can be created due to timing differences, and the final
    example shows a real-world case with IPv4, IPv6, and STUN.
-
-
-
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 10]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
 5.1.  Normal Handling
 
@@ -593,6 +611,13 @@ Internet-Draft             mdns-ice-candidates                March 2019
 a=candidate:1 1 udp 2122262783 1f4712db-ea17-4bcf-a596-105139dfd8bf.local
   54596 typ host
 
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 11]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    ICE Agent 2:
 
 a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
@@ -602,21 +627,6 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 
    In this example, a peer-reflexive candidate is generated because the
    mDNS candidate is signaled after the STUN checks begin.
-
-
-
-
-
-
-
-
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 11]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
            ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
        <Register mDNS |                                 |
@@ -652,6 +662,18 @@ Internet-Draft             mdns-ice-candidates                March 2019
  name                 |                                 |
  N2>                  |                                 |
 
+
+
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 12]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
 5.4.  IPv4, IPv6, and STUN handling
 
    This last example demonstrates the overall ICE gathering process for
@@ -666,14 +688,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
                       Pre-registration of mDNS names
                    |                |                 |
     <Register mDNS |                |                 | <Register mDNS
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 12]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
       name N1.1,   |                |                 |  name N2.1,
       192.168.1.1> |                |                 |  192.168.1.2>
     <Register mDNS |                |                 | <Register mDNS
@@ -708,6 +722,14 @@ Internet-Draft             mdns-ice-candidates                March 2019
                    |                |                 |
                    |<------ mDNS Candidate C2.1 ------| <N2.1>
                    |<------ mDNS Candidate C2.2 ------| <N2.2>
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 13]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    <Resolve mDNS   |                |                 |
     name N2.1 ...> |                |                 |
    <Resolve mDNS   |                |                 |
@@ -722,14 +744,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
                    |                |<--Binding Req---| <2001:db8::2
                    |                |---Binding Resp->|  is 2001:db8::2>
                    |<----- srflx Candidate C2.4 ------| <2001:db8::2>
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 13]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
                    |                |                 |
     <... N2.1 is   |                |                 |
      192.168.1.2>  |                |                 |
@@ -761,6 +775,17 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    Ice Agent 2 candidates:
 
+
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 14]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
      C2.1: candidate:1 1 udp 2122262783 b977f597-260c-4f70-9ac4-
                      26e69b55f966.local 20004 typ host
      C2.2: candidate:2 1 udp 2122262527 ac4595a7-7e42-4e85-85e6-
@@ -778,14 +803,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    capability of the browser for registering mDNS names or adding remote
    ICE host candidates with such names.  It also requires the mDNS
    responding capability of either the browser or the operating platform
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 14]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
-
    of the browser for registering, removing or resolving mDNS names.  In
    particular,
 
@@ -817,6 +834,14 @@ Internet-Draft             mdns-ice-candidates                March 2019
    interface cannot be sent less than one second since its last
    transmission.  This rate limiting rule however does not mitigate the
    above attacks, in which new names, hence new questions or records,
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 15]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    are constantly created and sent.  Therefore, a browser-wide mDNS
    message rate limit MUST be provided for all mDNS queries and
    responses that are dispatched during the ICE candidate gathering and
@@ -832,15 +857,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
    capable of responding mDNS queries, could send responses to block the
    use of the generated names.  This would lead to the discarding of
    this ICE host candidate as in Step 5 in Section 3.1.
-
-
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 15]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
    The above attack can be mitigated by skipping the probing when
    registering a name, which also conforms to Section 8 in [RFC6762],
@@ -871,6 +887,17 @@ Internet-Draft             mdns-ice-candidates                March 2019
 
    This document requires no actions from IANA.
 
+
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 16]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
 8.  References
 
 8.1.  Normative References
@@ -889,14 +916,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
               Extensions for Stateless Address Autoconfiguration in
               IPv6", RFC 4941, DOI 10.17487/RFC4941, September 2007,
               <https://www.rfc-editor.org/info/rfc4941>.
-
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 16]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
    [RFC5389]  Rosenberg, J., Mahy, R., Matthews, P., and D. Wing,
               "Session Traversal Utilities for NAT (STUN)", RFC 5389,
@@ -925,6 +944,16 @@ Internet-Draft             mdns-ice-candidates                March 2019
               "HTML Living Standard", n.d.,
               <https://html.spec.whatwg.org>.
 
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 17]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    [ICESDP]   Keranen, A., "Session Description Protocol (SDP) Offer/
               Answer procedures for Interactive Connectivity
               Establishment (ICE)", April 2018,
@@ -945,14 +974,6 @@ Internet-Draft             mdns-ice-candidates                March 2019
               and E. Lear, "Address Allocation for Private Internets",
               BCP 5, RFC 1918, DOI 10.17487/RFC1918, February 1996,
               <https://www.rfc-editor.org/info/rfc1918>.
-
-
-
-
-Fablet, et al.         Expires September 29, 2019              [Page 17]
-
-Internet-Draft             mdns-ice-candidates                March 2019
-
 
    [RFC6146]  Bagnulo, M., Matthews, P., and I. van Beijnum, "Stateful
               NAT64: Network Address and Protocol Translation from IPv6
@@ -980,6 +1001,15 @@ Authors' Addresses
    Email: youenn@apple.com
 
 
+
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 18]
+
+Internet-Draft             mdns-ice-candidates                March 2019
+
+
    Jeroen de Borst
    Google
 
@@ -1005,4 +1035,30 @@ Authors' Addresses
 
 
 
-Fablet, et al.         Expires September 29, 2019              [Page 18]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fablet, et al.         Expires September 29, 2019              [Page 19]

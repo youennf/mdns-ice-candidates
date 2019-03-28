@@ -485,7 +485,7 @@ ul.toc li {
 <li>Check whether this IP address satisfies the ICE agent&#8217;s policy regarding whether an address is safe to expose. If so, expose the candidate and abort this process.</li>
 <li>Check whether the ICE agent has previously generated, registered, and stored an mDNS hostname for this IP address as per Steps 3, 4, and 6. If it has, skip ahead to Step 7.</li>
 <li>Generate a unique mDNS hostname. The unique name MUST consist of a version 4 UUID as defined in <a href="#RFC4122" class="xref">[RFC4122]</a>, followed by &#8220;.local&#8221;.</li>
-<li>Register the candidate&#8217;s mDNS hostname as defined in <a href="#RFC6762" class="xref">[RFC6762]</a>.</li>
+<li>Register the candidate&#8217;s mDNS hostname as defined in <a href="#RFC6762" class="xref">[RFC6762]</a>. As the hostname is expected to be unique, the ICE agent SHOULD skip probing when registering the hostname. The ICE agent MAY also skip sending an mDNS announcement for the hostname.</li>
 <li>If registering of the mDNS hostname fails, abort these steps. The candidate is not exposed.</li>
 <li>Store the mDNS hostname and its related IP address in the ICE agent for future reuse.</li>
 <li>Replace the IP address of the ICE candidate with its mDNS hostname and provide the candidate to the web application.</li>
@@ -497,28 +497,29 @@ ul.toc li {
 <a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#implementation-guidance" id="implementation-guidance">Implementation Guidance</a>
 </h1>
 <h1 id="rfc.section.3.1.2.1">
-<a href="#rfc.section.3.1.2.1">3.1.2.1.</a> <a href="#determining-address-privacy-and-server-reflexive-candidates" id="determining-address-privacy-and-server-reflexive-candidates">Determining Address Privacy and Server-Reflexive Candidates</a>
+<a href="#rfc.section.3.1.2.1">3.1.2.1.</a> <a href="#mdns-registration-and-query-answer" id="mdns-registration-and-query-answer">mDNS registration and query answer</a>
 </h1>
-<p id="rfc.section.3.1.2.1.p.1">Naturally, an address that is already exposed to the Internet does not need to be protected by mDNS, as it can be trivially observed by the web server or remote endpoint. However, determining this ahead of time is not straightforward; while the fact that an IPv4 address is private can sometimes be inferred by its value, e.g., whether it is an <a href="#RFC1918" class="xref">[RFC1918]</a> address, the reverse is not necessarily true. IPv6 addresses present their own complications, e.g., private IPv6 addresses as a result of NAT64 <a href="#RFC6146" class="xref">[RFC6146]</a>.</p>
-<p id="rfc.section.3.1.2.1.p.2">Instead, the determination of whether an address is public can be reliably made as part of the ICE gathering process. For each mDNS host candidate generated according the guidance above, the usual STUN <a href="#RFC5389" class="xref">[RFC5389]</a> request is sent to a STUN server. This can be done for both IPv4 and IPv6 local addresses, provided that the application has configured both IPv4 and IPv6 STUN servers.  If the STUN response returns the same value as the local IP address, this indicates the address is in fact public.</p>
-<p id="rfc.section.3.1.2.1.p.3">Regardless of the result, a server-reflexive candidate will be generated; the transport address of this candidate is an IP address and therefore distinct from the hostname transport address of the associated mDNS candidate, and as such MUST NOT be considered redundant per the guidance in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.3. To avoid accidental IP address, this server-reflexive candidate MUST have its raddr field set to 0.0.0.0 and its rport field set to 0.</p>
-<p id="rfc.section.3.1.2.1.p.4">Once an address has been identified as public, the ICE agent MAY cache this information and omit mDNS protection for that address in future ICE gathering phases.</p>
+<p id="rfc.section.3.1.2.1.p.1">If the ICE agent skips both probing and announcement sending, the ICE agent does not send any mDNS message on the network. In that case, the ICE agent is expected to answer to any query matching the registered name.</p>
+<p id="rfc.section.3.1.2.1.p.2">Sending an mDNS announcement will usually allow the ICE agent receiving the remote ICE candidate containing the mDNS name to already have the information useful to resolve the mDNS name if the mDNS ICE candidate can actually be used.  If the mDNS announcement is not sent, this can increase the connection setup time.</p>
+<p id="rfc.section.3.1.2.1.p.3">Sending the mDNS announcement to the network can be delayed, for instance due to rate limits. An ICE agent can provide the candidate to the web application before the mDNS announcement is sent on the network.</p>
+<p id="rfc.section.3.1.2.1.p.4">When processing an mDNS query message that matches a registered mDNS name and the mDNS query message has its response-unicast bit set, the ICE agent SHOULD answer through unicast but SHOULD NOT send an mDNS announcement for the mDNS name. This will limit the multicast traffic as the announcement is probably not useful to any other node of the network.</p>
+<p id="rfc.section.3.1.2.1.p.5">TODO: Verify the &#8216;SHOULD NOT&#8217; rule interaction with <a href="https://tools.ietf.org/html/rfc6762#section-7.3">RFC 6762 section 7.3</a>.  Do we need to state that a query should always be sent? or sent even if a previous request was sent with the unicast response bit set?</p>
 <h1 id="rfc.section.3.1.2.2">
-<a href="#rfc.section.3.1.2.2">3.1.2.2.</a> <a href="#special-handling-for-ipv6-addresses" id="special-handling-for-ipv6-addresses">Special Handling for IPv6 Addresses</a>
+<a href="#rfc.section.3.1.2.2">3.1.2.2.</a> <a href="#determining-address-privacy-and-server-reflexive-candidates" id="determining-address-privacy-and-server-reflexive-candidates">Determining Address Privacy and Server-Reflexive Candidates</a>
 </h1>
-<p id="rfc.section.3.1.2.2.p.1">As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, private IPv4 addresses are especially problematic because of their unbounded lifetime. However, the <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses recommended for WebRTC have inherent privacy protections, namely a short lifetime and the lack of any stateful information. Accordingly, implementations MAY choose to not conceal <a href="#RFC4941" class="xref">[RFC4941]</a> addresses with mDNS names as a tradeoff for improved peer-to-peer connectivity.</p>
+<p id="rfc.section.3.1.2.2.p.1">Naturally, an address that is already exposed to the Internet does not need to be protected by mDNS, as it can be trivially observed by the web server or remote endpoint. However, determining this ahead of time is not straightforward; while the fact that an IPv4 address is private can sometimes be inferred by its value, e.g., whether it is an <a href="#RFC1918" class="xref">[RFC1918]</a> address, the reverse is not necessarily true. IPv6 addresses present their own complications, e.g., private IPv6 addresses as a result of NAT64 <a href="#RFC6146" class="xref">[RFC6146]</a>.</p>
+<p id="rfc.section.3.1.2.2.p.2">Instead, the determination of whether an address is public can be reliably made as part of the ICE gathering process. For each mDNS host candidate generated according the guidance above, the usual STUN <a href="#RFC5389" class="xref">[RFC5389]</a> request is sent to a STUN server. This can be done for both IPv4 and IPv6 local addresses, provided that the application has configured both IPv4 and IPv6 STUN servers.  If the STUN response returns the same value as the local IP address, this indicates the address is in fact public.</p>
+<p id="rfc.section.3.1.2.2.p.3">Regardless of the result, a server-reflexive candidate will be generated; the transport address of this candidate is an IP address and therefore distinct from the hostname transport address of the associated mDNS candidate, and as such MUST NOT be considered redundant per the guidance in <a href="#RFC8445" class="xref">[RFC8445]</a>, Section 5.1.3. To avoid accidental IP address, this server-reflexive candidate MUST have its raddr field set to 0.0.0.0 and its rport field set to 0.</p>
+<p id="rfc.section.3.1.2.2.p.4">Once an address has been identified as public, the ICE agent MAY cache this information and omit mDNS protection for that address in future ICE gathering phases.</p>
 <h1 id="rfc.section.3.1.2.3">
-<a href="#rfc.section.3.1.2.3">3.1.2.3.</a> <a href="#mdns-candidate-encoding" id="mdns-candidate-encoding">mDNS Candidate Encoding</a>
+<a href="#rfc.section.3.1.2.3">3.1.2.3.</a> <a href="#special-handling-for-ipv6-addresses" id="special-handling-for-ipv6-addresses">Special Handling for IPv6 Addresses</a>
 </h1>
-<p id="rfc.section.3.1.2.3.p.1">The mDNS name of an mDNS candidate MUST be used in the connection-address field of its candidate attribute. When an mDNS candidate is the default candidate, its mDNS name MUST be used in the connection-address field of the SDP &#8220;c=&#8221; line.  Since an mDNS candidate also conceals its address family, the &#8220;c=&#8221; line SHOULD use &#8220;IP4&#8221; in the address-type field.</p>
-<p id="rfc.section.3.1.2.3.p.2">Any candidates exposed to the application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
+<p id="rfc.section.3.1.2.3.p.1">As noted in <a href="#IPHandling" class="xref">[IPHandling]</a>, private IPv4 addresses are especially problematic because of their unbounded lifetime. However, the <a href="#RFC4941" class="xref">[RFC4941]</a> IPv6 addresses recommended for WebRTC have inherent privacy protections, namely a short lifetime and the lack of any stateful information. Accordingly, implementations MAY choose to not conceal <a href="#RFC4941" class="xref">[RFC4941]</a> addresses with mDNS names as a tradeoff for improved peer-to-peer connectivity.</p>
 <h1 id="rfc.section.3.1.2.4">
-<a href="#rfc.section.3.1.2.4">3.1.2.4.</a> <a href="#mdns-registration-and-query-answer" id="mdns-registration-and-query-answer">mDNS registration and query answer</a>
+<a href="#rfc.section.3.1.2.4">3.1.2.4.</a> <a href="#mdns-candidate-encoding" id="mdns-candidate-encoding">mDNS Candidate Encoding</a>
 </h1>
-<p id="rfc.section.3.1.2.4.p.1">As the mNDS name of any mDNS candidate is expected to be unique, the ICE agent SHOULD skip probing when registering the mDNS name. The ICE agent MAY skip sending a mDNS announcement for the mDNS name.</p>
-<p id="rfc.section.3.1.2.4.p.2">If the ICE agent skips probing and announcement sending, the ICE agent does not send any mDNS message on the network. The ICE agent SHOULD answer to any query matching the registered name.</p>
-<p id="rfc.section.3.1.2.4.p.3">When processing a mDNS query message that matches a registered mDNS name and the mDNS query message has its response-unicast bit set, the ICE agent SHOULD answer through unicast but SHOULD NOT send a mDNS announcement for the mDNS name.</p>
-<p id="rfc.section.3.1.2.4.p.4">TODO: Verify the &#8216;SHOULD NOT&#8217; rule interaction with <a href="https://tools.ietf.org/html/rfc6762#section-7.3">RFC 6762 section 7.3</a>.  Do we need to state that a query should always be sent?</p>
+<p id="rfc.section.3.1.2.4.p.1">The mDNS name of an mDNS candidate MUST be used in the connection-address field of its candidate attribute. When an mDNS candidate is the default candidate, its mDNS name MUST be used in the connection-address field of the SDP &#8220;c=&#8221; line.  Since an mDNS candidate also conceals its address family, the &#8220;c=&#8221; line SHOULD use &#8220;IP4&#8221; in the address-type field.</p>
+<p id="rfc.section.3.1.2.4.p.2">Any candidates exposed to the application via local descriptions MUST be identical to those provided during candidate gathering (i.e., MUST NOT contain private host IP addresses).</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#processing" id="processing">ICE Candidate Processing</a>
 </h1>
@@ -531,7 +532,7 @@ ul.toc li {
 
 <ol>
 <li>If the connection-address field value of the ICE candidate does not end with &#8220;.local&#8221; or if the value contains more than one &#8220;.&#8221;, then process the candidate as defined in <a href="#RFC8445" class="xref">[RFC8445]</a>.</li>
-<li>Otherwise, resolve the candidate using mDNS.</li>
+<li>Otherwise, resolve the candidate using mDNS. The ICE agent SHOULD set the unicast-response bit of the corresponding mDNS query message. This allows minimizing multicast traffic as the response is probably only useful to the querying node.</li>
 <li>If it resolves to an IP address, replace the mDNS hostname of the ICE candidate with the resolved IP address and continue processing of the candidate as defined in <a href="#RFC8445" class="xref">[RFC8445]</a>.</li>
 <li>Otherwise, ignore the candidate.</li>
 </ol>
@@ -540,8 +541,7 @@ ul.toc li {
 </h1>
 <p id="rfc.section.3.2.2.p.1">An ICE agent may use a hostname resolver that transparently supports both Multicast and Unicast DNS. In this case the resolution of a &#8220;.local&#8221; name may happen through Unicast DNS as noted in <a href="#RFC6762" class="xref">[RFC6762]</a>, Section 3.</p>
 <p id="rfc.section.3.2.2.p.2">An ICE agent SHOULD ignore candidates where the hostname resolution returns more than one IP address.</p>
-<p id="rfc.section.3.2.2.p.3">When resolving a mDNS name, the ICE agent SHOULD set the unicast-response bit of the corresponding mDNS query message.</p>
-<p id="rfc.section.3.2.2.p.4">An ICE agent MAY add additional restrictions regarding the ICE candidates it will resolve using mDNS, as this mechanism allows attackers to send ICE traffic to devices with well-known mDNS names.</p>
+<p id="rfc.section.3.2.2.p.3">An ICE agent MAY add additional restrictions regarding the ICE candidates it will resolve using mDNS, as this mechanism allows attackers to send ICE traffic to devices with well-known mDNS names.</p>
 <h1 id="rfc.section.3.3">
 <a href="#rfc.section.3.3">3.3.</a> <a href="#privacy" id="privacy">Additional Privacy Considerations</a>
 </h1>
