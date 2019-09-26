@@ -85,7 +85,7 @@ Table of Contents
        3.3.6.  Monitoring of Sessions  . . . . . . . . . . . . . . .   9
    4.  Potential Limitations . . . . . . . . . . . . . . . . . . . .   9
      4.1.  Reduced Connectivity  . . . . . . . . . . . . . . . . . .   9
-     4.2.  Connection Setup Latency  . . . . . . . . . . . . . . . .   9
+     4.2.  Connection Setup Latency  . . . . . . . . . . . . . . . .  10
      4.3.  Backward Compatibility  . . . . . . . . . . . . . . . . .  10
    5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
      5.1.  Normal Handling . . . . . . . . . . . . . . . . . . . . .  10
@@ -481,22 +481,22 @@ Internet-Draft             mdns-ice-candidates            September 2019
    connectivity, reduced throughput and increased latency, as well as
    increased cost in case of TURN relay.
 
+   During experimental testing of the mDNS technique across a set of
+   known mDNS-aware endpoints that had configured a STUN server but not
+   a TURN server, the observed impact to ICE connection rate was 2%
+   (relative) when mDNS was enabled on both sides, compared to when mDNS
+   was only enabled on one side.  In this testing, the percentage of
+   connections that required STUN (i.e., went through a NAT) increased
+   from 94% to 97%, indicating that mDNS succeeded about half the time,
+   and fell back to NAT hairpin for the remainder.  The most likely
+   explanation for the overall connection rate drop is that hairpinning
+   failed in some cases.
+
    One potential mitigation, as discussed in Section 3.3, is to not
    conceal candidates created from [RFC4941] IPv6 addresses.  This
    permits connectivity even in large internal networks or where mDNS is
-   disabled.
-
-   The exact impact of the mDNS technique is being researched
-   experimentally and will be provided before publication of this
-   document.
-
-4.2.  Connection Setup Latency
-
-   As noted in Section 3, ICE agents using the mDNS technique are
-   responsible for registering and resolving mDNS names as part of the
-   ICE process.  These steps may delay establishment of a direct peer-
-   to-peer connection, compared to when raw local IP addresses are used.
-
+   disabled.  Future versions of this document will include experimental
+   data regarding this option.
 
 
 
@@ -505,6 +505,13 @@ Fablet, et al.           Expires March 29, 2020                 [Page 9]
 
 Internet-Draft             mdns-ice-candidates            September 2019
 
+
+4.2.  Connection Setup Latency
+
+   As noted in Section 3, ICE agents using the mDNS technique are
+   responsible for registering and resolving mDNS names as part of the
+   ICE process.  These steps may delay establishment of a direct peer-
+   to-peer connection, compared to when raw local IP addresses are used.
 
    Given that these mDNS registrations and queries are typically
    occurring on a local network, any associated delays should be small.
@@ -526,9 +533,12 @@ Internet-Draft             mdns-ice-candidates            September 2019
 
    However, some legacy endpoints are not fully spec-compliant and can
    behave unpredictably in the presence of ICE candidates that contain a
-   hostname, potentially leading to ICE failure.  Such endpoints have
-   been identified during testing of this technique, but appear to be
-   rare.
+   hostname, potentially leading to ICE failure.  Some endpoints may
+   also fail to handle a connectivity check from an address that they
+   have not received in signaling.  During the aforementioned
+   experimental testing, the connection rate when interacting with
+   endpoints that provided raw IP addresses (and therefore should be
+   unaffected) decreased by 3% (relative), presumably for these reasons.
 
 5.  Examples
 
@@ -542,16 +552,6 @@ Internet-Draft             mdns-ice-candidates            September 2019
 
    In this example, mDNS candidates are exchanged between peers and
    resolved normally to obtain the corresponding IP addresses.
-
-
-
-
-
-
-
-
-
-
 
 
 
