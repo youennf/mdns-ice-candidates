@@ -76,20 +76,20 @@ Table of Contents
      3.2.  ICE Candidate Processing  . . . . . . . . . . . . . . . .   6
        3.2.1.  Procedure . . . . . . . . . . . . . . . . . . . . . .   6
        3.2.2.  Implementation Guidance . . . . . . . . . . . . . . .   6
-     3.3.  Additional Privacy Considerations . . . . . . . . . . . .   6
+     3.3.  Additional Privacy Considerations . . . . . . . . . . . .   7
        3.3.1.  Statistics  . . . . . . . . . . . . . . . . . . . . .   7
        3.3.2.  Interactions With TURN Servers  . . . . . . . . . . .   7
        3.3.3.  Generated Name Reuse  . . . . . . . . . . . . . . . .   8
        3.3.4.  Specific Browsing Contexts  . . . . . . . . . . . . .   8
        3.3.5.  Network Interface Enumeration . . . . . . . . . . . .   8
-       3.3.6.  Monitoring of Sessions  . . . . . . . . . . . . . . .   8
+       3.3.6.  Monitoring of Sessions  . . . . . . . . . . . . . . .   9
        3.3.7.  Absence of mDNS candidates  . . . . . . . . . . . . .   9
    4.  Potential Limitations . . . . . . . . . . . . . . . . . . . .   9
      4.1.  Reduced Connectivity  . . . . . . . . . . . . . . . . . .   9
-     4.2.  Connection Setup Latency  . . . . . . . . . . . . . . . .   9
+     4.2.  Connection Setup Latency  . . . . . . . . . . . . . . . .  10
      4.3.  Backward Compatibility  . . . . . . . . . . . . . . . . .  10
    5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     5.1.  Normal Handling . . . . . . . . . . . . . . . . . . . . .  10
+     5.1.  Normal Handling . . . . . . . . . . . . . . . . . . . . .  11
      5.2.  Peer-reflexive Candidate From Slow Signaling  . . . . . .  11
      5.3.  Peer-reflexive Candidate From Slow Resolution . . . . . .  12
      5.4.  IPv4, IPv6, and STUN handling . . . . . . . . . . . . . .  12
@@ -251,8 +251,9 @@ Internet-Draft             mdns-ice-candidates            September 2019
    and therefore distinct from the hostname transport address of the
    associated mDNS candidate, and as such MUST NOT be considered
    redundant per the guidance in [RFC8445], Section 5.1.3.  To avoid
-   accidental IP address, this server-reflexive candidate MUST have its
-   raddr field set to 0.0.0.0 and its rport field set to 0.
+   accidental IP address disclosure, this server-reflexive candidate
+   MUST have its raddr field set to "0.0.0.0"/"::" and its rport field
+   set to "9", as discussed in [ICESDP], Section 9.1.
 
    Once an address has been identified as public, the ICE agent MAY
    cache this information and omit mDNS protection for that address in
@@ -271,9 +272,8 @@ Internet-Draft             mdns-ice-candidates            September 2019
 3.1.2.3.  mDNS Candidate Encoding
 
    The mDNS name of an mDNS candidate MUST be used in the connection-
-   address field of its candidate attribute.  When an mDNS candidate is
-   the default candidate, its mDNS name MUST be used in the connection-
-   address field of the SDP "c=" line.  Since an mDNS candidate also
+   address field of its candidate attribute.  However, when an mDNS
+   candidate would be the default candidate, typically because there are
 
 
 
@@ -282,8 +282,13 @@ Fablet, et al.           Expires March 29, 2020                 [Page 5]
 Internet-Draft             mdns-ice-candidates            September 2019
 
 
-   conceals its address family, the "c=" line SHOULD use "IP4" in the
-   address-type field.
+   no other candidates, its mDNS name MUST NOT be used in the
+   connection-address field of the SDP "c=" line, as experimental
+   deployment has indicated that many remote endpoints will fail to
+   handle such a SDP.  In this situation, the IP address values
+   "0.0.0.0"/"::" and port value "9" MUST instead be used in the c= and
+   m= lines, similar to how the no-candidates case is handled in
+   [ICESDP], Section 4.3.1.
 
    Any candidates exposed to the application via local descriptions MUST
    be identical to those provided during candidate gathering (i.e., MUST
@@ -325,11 +330,6 @@ Internet-Draft             mdns-ice-candidates            September 2019
    candidates it will resolve using mDNS, as this mechanism allows
    attackers to send ICE traffic to devices with well-known mDNS names.
 
-3.3.  Additional Privacy Considerations
-
-   The goal of this mechanism is to keep knowledge of private host IP
-   addresses within the ICE agent while continuing to allow the
-   application to transmit ICE candidates.  Besides keeping private host
 
 
 
@@ -338,6 +338,11 @@ Fablet, et al.           Expires March 29, 2020                 [Page 6]
 Internet-Draft             mdns-ice-candidates            September 2019
 
 
+3.3.  Additional Privacy Considerations
+
+   The goal of this mechanism is to keep knowledge of private host IP
+   addresses within the ICE agent while continuing to allow the
+   application to transmit ICE candidates.  Besides keeping private host
    IP addresses out of ICE candidates, implementations must take steps
    to prevent these IP addresses from being exposed to web applications
    through other means.
@@ -380,11 +385,6 @@ Internet-Draft             mdns-ice-candidates            September 2019
 
    This restriction has no effect on connectivity; in the cases where
    host IP addresses are private and need to be wrapped with mDNS names,
-   they will be unreachable from the TURN server, and as noted above,
-   the reverse path will continue to work normally.
-
-
-
 
 
 
@@ -393,6 +393,9 @@ Fablet, et al.           Expires March 29, 2020                 [Page 7]
 
 Internet-Draft             mdns-ice-candidates            September 2019
 
+
+   they will be unreachable from the TURN server, and as noted above,
+   the reverse path will continue to work normally.
 
 3.3.3.  Generated Name Reuse
 
@@ -436,12 +439,9 @@ Internet-Draft             mdns-ice-candidates            September 2019
    Note that no additional fingerprinting risk is introduced when
    restricting mDNS hostname candidates to default route only.
 
-3.3.6.  Monitoring of Sessions
 
-   A malicious endpoint in the local network may also record other
-   endpoints who are registering, unregistering, and resolving mDNS
-   names.  By doing so, they can create a session log that shows which
-   endpoints are communicating, and for how long.  If both endpoints in
+
+
 
 
 
@@ -450,6 +450,12 @@ Fablet, et al.           Expires March 29, 2020                 [Page 8]
 Internet-Draft             mdns-ice-candidates            September 2019
 
 
+3.3.6.  Monitoring of Sessions
+
+   A malicious endpoint in the local network may also record other
+   endpoints who are registering, unregistering, and resolving mDNS
+   names.  By doing so, they can create a session log that shows which
+   endpoints are communicating, and for how long.  If both endpoints in
    the session are on the same network, the fact they are communicating
    can be discovered.
 
@@ -484,20 +490,14 @@ Internet-Draft             mdns-ice-candidates            September 2019
    connectivity, reduced throughput and increased latency, as well as
    increased cost in case of TURN relay.
 
-   One potential mitigation, as discussed in Section 3.3, is to not
-   conceal candidates created from [RFC4941] IPv6 addresses.  This
-   permits connectivity even in large internal networks or where mDNS is
-   disabled.
-
-   The exact impact of the mDNS technique is being researched
-   experimentally and will be provided before publication of this
-   document.
-
-4.2.  Connection Setup Latency
-
-   As noted in Section 3, ICE agents using the mDNS technique are
-   responsible for registering and resolving mDNS names as part of the
-
+   During experimental testing of the mDNS technique across a set of
+   known mDNS-aware endpoints that had configured a STUN server but not
+   a TURN server, the observed impact to ICE connection rate was 2%
+   (relative) when mDNS was enabled on both sides, compared to when mDNS
+   was only enabled on one side.  In this testing, the percentage of
+   connections that required STUN (i.e., went through a NAT) increased
+   from 94% to 97%, indicating that mDNS succeeded about half the time,
+   and fell back to NAT hairpin for the remainder.  The most likely
 
 
 
@@ -506,6 +506,19 @@ Fablet, et al.           Expires March 29, 2020                 [Page 9]
 Internet-Draft             mdns-ice-candidates            September 2019
 
 
+   explanation for the overall connection rate drop is that hairpinning
+   failed in some cases.
+
+   One potential mitigation, as discussed in Section 3.3, is to not
+   conceal candidates created from [RFC4941] IPv6 addresses.  This
+   permits connectivity even in large internal networks or where mDNS is
+   disabled.  Future versions of this document will include experimental
+   data regarding this option.
+
+4.2.  Connection Setup Latency
+
+   As noted in Section 3, ICE agents using the mDNS technique are
+   responsible for registering and resolving mDNS names as part of the
    ICE process.  These steps may delay establishment of a direct peer-
    to-peer connection, compared to when raw local IP addresses are used.
 
@@ -529,31 +542,18 @@ Internet-Draft             mdns-ice-candidates            September 2019
 
    However, some legacy endpoints are not fully spec-compliant and can
    behave unpredictably in the presence of ICE candidates that contain a
-   hostname, potentially leading to ICE failure.  Such endpoints have
-   been identified during testing of this technique, but appear to be
-   rare.
+   hostname, potentially leading to ICE failure.  Some endpoints may
+   also fail to handle a connectivity check from an address that they
+   have not received in signaling.  During the aforementioned
+   experimental testing, the connection rate when interacting with
+   endpoints that provided raw IP addresses (and therefore should be
+   unaffected) decreased by 3% (relative), presumably for these reasons.
 
 5.  Examples
 
    The examples below show how the mDNS technique is used during ICE
    processing.  The first example shows a simple case, the next two
    examples demonstrate how peer-reflexive candidates for local IP
-   addresses can be created due to timing differences, and the final
-   example shows a real-world case with IPv4, IPv6, and STUN.
-
-5.1.  Normal Handling
-
-   In this example, mDNS candidates are exchanged between peers and
-   resolved normally to obtain the corresponding IP addresses.
-
-
-
-
-
-
-
-
-
 
 
 
@@ -561,6 +561,14 @@ Fablet, et al.           Expires March 29, 2020                [Page 10]
 
 Internet-Draft             mdns-ice-candidates            September 2019
 
+
+   addresses can be created due to timing differences, and the final
+   example shows a real-world case with IPv4, IPv6, and STUN.
+
+5.1.  Normal Handling
+
+   In this example, mDNS candidates are exchanged between peers and
+   resolved normally to obtain the corresponding IP addresses.
 
            ICE Agent 1 (192.0.2.1)           ICE Agent 2 (192.0.2.2)
        <Register mDNS |                                 |
@@ -597,14 +605,6 @@ a=candidate:1 1 udp 2122262783 2579ef4b-50ae-4bfe-95af-70b3376ecb9c.local
 
    In this example, a peer-reflexive candidate is generated because the
    mDNS candidate is signaled after the STUN checks begin.
-
-
-
-
-
-
-
-
 
 
 
